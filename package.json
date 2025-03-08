@@ -1,0 +1,37 @@
+{
+  "name": "llm-chatbot",
+  "version": "1.0.0",
+  "description": "Full stack React, Express, SQLite application",
+  "main": "index.js",
+  "scripts": {
+    "setup": "npm install && npm run install:frontend && npm run install:backend",
+    "install:frontend": "cd frontend && npm install",
+    "install:backend": "cd backend && npm install",
+    "dev": "concurrently --kill-others-on-fail --prefix \"[{name}]\" --names \"FRONTEND,BACKEND\" \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && npm run dev",
+    "build": "npm run build:frontend && npm run build:backend",
+    "build:frontend": "cd frontend && npm run build",
+    "build:backend": "cd backend && npm run build",
+    "start": "cd backend && npm start",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:build": "docker-compose up -d --build",
+    "docker:logs": "docker-compose logs -f"
+  },
+  "keywords": [
+    "react",
+    "express",
+    "sqlite",
+    "typescript"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  },
+  "dependencies": {
+    "@types/recharts": "^1.8.29",
+    "recharts": "^2.15.1"
+  }
+}
