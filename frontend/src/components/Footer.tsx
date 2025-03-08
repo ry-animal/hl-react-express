@@ -19,7 +19,7 @@ const Footer = () => {
     <Box
       component="footer"
       sx={{
-        py: { xs: 0.5, sm: 1 },
+        py: { xs: 0.25, sm: 0.5 },
         mt: 'auto',
         backgroundColor:
           theme.palette.mode === 'dark'
@@ -42,19 +42,20 @@ const Footer = () => {
           justifyContent: 'space-between',
           alignItems: 'center',
           px: { xs: 2, sm: 3 },
+          minHeight: { xs: '40px', sm: '48px' },
         }}
       >
         <Box
           sx={{
-            mb: isMobile ? { xs: 1, sm: 1.5 } : 0,
-            mt: isMobile ? 1 : 0,
+            mb: isMobile ? { xs: 0.5, sm: 0.75 } : 0,
+            mt: isMobile ? 0.5 : 0,
             textAlign: 'center',
           }}
         >
           <img
             src="/assets/fremont.svg"
             alt="Fremont logo"
-            height={isMobile ? '40' : '60'}
+            height={isMobile ? '30' : '40'}
             style={{
               maxWidth: '100%',
               filter: 'brightness(0) invert(1)',
@@ -66,11 +67,11 @@ const Footer = () => {
           variant="body2"
           align={isMobile ? 'center' : 'right'}
           sx={{
-            fontSize: { xs: '0.75rem', sm: '0.875rem' },
+            fontSize: { xs: '0.7rem', sm: '0.8rem' },
             color: 'inherit',
             fontWeight: theme.palette.mode === 'dark' ? 'normal' : 'medium',
-            lineHeight: 1.6,
-            mb: isMobile ? 1 : 0,
+            lineHeight: 1.4,
+            mb: isMobile ? 0.5 : 0,
           }}
         >
           {'© '}

@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import {
     Box, Typography, Card, CardContent, Grid, CircularProgress,
     Paper, Pagination, Tabs, Tab, TableContainer, Table, TableHead, TableRow, TableCell, TableBody,
-    IconButton
+    IconButton, Divider, useTheme, useMediaQuery
 } from '@mui/material';
 import {
     CartesianGrid, Tooltip, Legend, ResponsiveContainer,
@@ -24,8 +24,6 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import TokenIcon from '@mui/icons-material/Token';
-import Header from './Header';
-import Footer from './Footer';
 
 interface Metric {
     id: number;
@@ -52,6 +50,9 @@ interface LogEntry {
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
 
 const MetricsDashboard = () => {
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const isTablet = useMediaQuery(theme.breakpoints.down('md'));
     const [currentTab, setCurrentTab] = useState(0);
     const [metricsPage, setMetricsPage] = useState(0);
     const [logsPage, setLogsPage] = useState(0);
@@ -76,50 +77,83 @@ const MetricsDashboard = () => {
         queryFn: () => fetchLogs(logsPage, pageSize)
     });
 
-    // Setup table columns for metrics
+    // Setup table columns for metrics with responsive visibility
     const columnHelper = createColumnHelper<Metric>();
     const columns = [
         columnHelper.accessor('id', {
             header: 'ID',
             cell: info => info.getValue(),
+            // Always show ID column as it's important for identification
         }),
         columnHelper.accessor('event_type', {
             header: 'Event Type',
             cell: info => info.getValue(),
+            // Always show event type as it's a primary identifier
         }),
         columnHelper.accessor('message_length', {
             header: 'Message Length',
             cell: info => info.getValue() !== null ? info.getValue() : '-',
+            // Hide on mobile as it's less important
+            enableHiding: true,
         }),
         columnHelper.accessor('response_length', {
             header: 'Response Length',
             cell: info => info.getValue() !== null ? info.getValue() : '-',
+            // Hide on mobile as it's less important
+            enableHiding: true,
         }),
         columnHelper.accessor('response_time', {
-            header: 'Response Time (ms)',
-            cell: info => info.getValue() !== null ? info.getValue() : '-',
+            header: 'Response Time',
+            cell: info => info.getValue() !== null ? `${info.getValue()} ms` : '-',
+            // Keep visible as it's important performance data
         }),
         columnHelper.accessor('token_count', {
             header: 'Tokens',
             cell: info => info.getValue() !== null ? info.getValue() : '-',
+            // Keep on tablet, hide on mobile
         }),
         columnHelper.accessor('estimated_cost', {
-            header: 'Cost ($)',
+            header: 'Cost',
             cell: info => info.getValue() !== null ? `$${info.getValue()?.toFixed(5)}` : '-',
+            // Important business metric, keep visible
         }),
         columnHelper.accessor('model', {
             header: 'Model',
             cell: info => info.getValue() || '-',
+            // Hide on mobile as it's often the same
+            enableHiding: true,
         }),
         columnHelper.accessor('timestamp', {
-            header: 'Timestamp',
-            cell: info => new Date(info.getValue()).toLocaleString(),
+            header: 'Time',
+            cell: info => {
+                const date = new Date(info.getValue());
+                // On mobile, show more compact date
+                return isMobile
+                    ? date.toLocaleTimeString()
+                    : date.toLocaleString();
+            },
+            // Keep visible as timing data is important
         }),
     ];
 
+    const visibleColumns = columns.filter(column => {
+        // Type guard to ensure column.id is a string
+        const columnId = column.id as string;
+
+        if (isMobile) {
+            // Keep only the most important columns on mobile
+            return !column.enableHiding || ['id', 'event_type', 'response_time', 'estimated_cost', 'timestamp'].includes(columnId);
+        }
+        if (isTablet) {
+            // Show more columns on tablet but still hide some
+            return !column.enableHiding || !['message_length', 'response_length', 'model'].includes(columnId);
+        }
+        return true; // Show all columns on desktop
+    });
+
     const table = useReactTable({
         data: metricsData?.metrics || [],
-        columns,
+        columns: visibleColumns,
         state: {
             sorting,
         },
@@ -159,28 +193,52 @@ const MetricsDashboard = () => {
     }
 
     return (
-        <Box sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            minHeight: '100vh',
-            width: '100vw',
-            maxWidth: '100vw',
-            backgroundColor: 'background.default',
-            overflow: 'hidden'
-        }}>
-            <Header />
-
-            <Box component="main" sx={{ flex: 1, display: 'flex', flexDirection: 'column', width: '100%', p: 3 }}>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-                    <Typography variant="h4" sx={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 600 }} gutterBottom>
+        <Box sx={{ width: '100%', maxWidth: 1200, mx: 'auto', p: { xs: 1, sm: 2 } }}>
+            <Paper
+                sx={{
+                    p: { xs: 2, sm: 3 },
+                    borderRadius: 2,
+                    mb: 3,
+                    boxShadow: theme.shadows[2],
+                }}
+            >
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    mb: 3,
+                    gap: { xs: 0, sm: 1 }
+                }}>
+                    <Typography
+                        variant="h4"
+                        gutterBottom
+                        fontWeight="medium"
+                        color="primary"
+                    >
                         System Metrics Dashboard
                     </Typography>
-                    <IconButton onClick={refreshData} title="Refresh data">
+                    <IconButton onClick={refreshData} title="Refresh data" sx={{
+                        mb: { xs: 8, sm: 2 }
+                    }}>
                         <RefreshIcon />
                     </IconButton>
                 </Box>
 
-                <Tabs value={currentTab} onChange={handleTabChange} sx={{ mb: 3 }}>
+                <Typography variant="body1" paragraph color="text.secondary">
+                    Comprehensive analytics for system performance and usage metrics.
+                </Typography>
+
+                <Tabs
+                    value={currentTab}
+                    onChange={handleTabChange}
+                    sx={{
+                        mb: 3,
+                        '& .MuiTabs-flexContainer': {
+                            flexWrap: { xs: 'wrap', sm: 'nowrap' }
+                        }
+                    }}
+                    variant={isMobile ? "fullWidth" : "standard"}
+                >
                     <Tab label="Summary" />
                     <Tab label="Detailed Metrics" />
                     <Tab label="Logs" />
@@ -188,14 +246,14 @@ const MetricsDashboard = () => {
 
                 {currentTab === 0 && summaryData && (
                     <>
-                        <Grid container spacing={3} sx={{ mb: 4 }}>
+                        <Grid container spacing={2} sx={{ mb: 2 }}>
                             <Grid item xs={12} sm={6} md={3}>
-                                <Card sx={{ height: '100%' }}>
+                                <Card variant="outlined" sx={{ height: '100%' }}>
                                     <CardContent>
-                                        <Typography variant="h6" gutterBottom>
+                                        <Typography color="text.secondary" gutterBottom>
                                             Avg Response Time
                                         </Typography>
-                                        <Typography variant="h3">
+                                        <Typography variant="h4" component="div" color="primary.main">
                                             {Math.round(summaryData.avgResponseTime)}
                                             <Typography variant="caption" display="inline" sx={{ ml: 1 }}>
                                                 ms
@@ -206,12 +264,12 @@ const MetricsDashboard = () => {
                             </Grid>
 
                             <Grid item xs={12} sm={6} md={3}>
-                                <Card sx={{ height: '100%' }}>
+                                <Card variant="outlined" sx={{ height: '100%' }}>
                                     <CardContent>
-                                        <Typography variant="h6" gutterBottom>
+                                        <Typography color="text.secondary" gutterBottom>
                                             Total Requests
                                         </Typography>
-                                        <Typography variant="h3">
+                                        <Typography variant="h4" component="div" color="primary.main">
                                             {summaryData.eventCounts.reduce((acc, curr) => acc + curr.count, 0)}
                                         </Typography>
                                     </CardContent>
@@ -219,12 +277,12 @@ const MetricsDashboard = () => {
                             </Grid>
 
                             <Grid item xs={12} sm={6} md={3}>
-                                <Card sx={{ height: '100%' }}>
+                                <Card variant="outlined" sx={{ height: '100%' }}>
                                     <CardContent>
-                                        <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
-                                            <TokenIcon sx={{ mr: 1 }} /> Total Tokens
+                                        <Typography color="text.secondary" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
+                                            <TokenIcon sx={{ mr: 1, fontSize: '1rem' }} /> Total Tokens
                                         </Typography>
-                                        <Typography variant="h3">
+                                        <Typography variant="h4" component="div" color="primary.main">
                                             {summaryData.tokenUsage.totalTokens.toLocaleString()}
                                         </Typography>
                                     </CardContent>
@@ -232,12 +290,12 @@ const MetricsDashboard = () => {
                             </Grid>
 
                             <Grid item xs={12} sm={6} md={3}>
-                                <Card sx={{ height: '100%' }}>
+                                <Card variant="outlined" sx={{ height: '100%' }}>
                                     <CardContent>
-                                        <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
-                                            <AttachMoneyIcon sx={{ mr: 1 }} /> Total Cost
+                                        <Typography color="text.secondary" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
+                                            <AttachMoneyIcon sx={{ mr: 1, fontSize: '1rem' }} /> Total Cost
                                         </Typography>
-                                        <Typography variant="h3">
+                                        <Typography variant="h4" component="div" color="primary.main">
                                             ${summaryData.tokenUsage.totalCost.toFixed(4)}
                                         </Typography>
                                     </CardContent>
@@ -245,41 +303,96 @@ const MetricsDashboard = () => {
                             </Grid>
                         </Grid>
 
+                        <Divider sx={{ my: 2 }} />
+
+                        <Typography variant="h5" gutterBottom sx={{ mb: 2 }}>
+                            Usage Analytics
+                        </Typography>
+
                         <Grid container spacing={3}>
                             <Grid item xs={12} md={6}>
-                                <Card>
+                                <Card variant="outlined">
                                     <CardContent>
-                                        <Typography variant="h6" gutterBottom>
+                                        <Typography variant="h6" gutterBottom color="text.secondary">
                                             Event Types
                                         </Typography>
-                                        <ResponsiveContainer width="100%" height={300}>
-                                            <PieChart>
-                                                <Pie
-                                                    data={summaryData.eventCounts}
-                                                    dataKey="count"
-                                                    nameKey="event_type"
-                                                    cx="50%"
-                                                    cy="50%"
-                                                    outerRadius={100}
-                                                    fill="#8884d8"
-                                                    label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                                                >
-                                                    {summaryData.eventCounts.map((_, index) => (
-                                                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                                                    ))}
-                                                </Pie>
-                                                <Tooltip formatter={(value) => [`${value} requests`, 'Count']} />
-                                                <Legend />
-                                            </PieChart>
-                                        </ResponsiveContainer>
+                                        <Box sx={{ width: '100%', height: 300, position: 'relative' }}>
+                                            <ResponsiveContainer>
+                                                <PieChart>
+                                                    <Pie
+                                                        data={summaryData.eventCounts}
+                                                        dataKey="count"
+                                                        nameKey="event_type"
+                                                        cx="50%"
+                                                        cy="50%"
+                                                        outerRadius={isMobile ? 70 : 100}
+                                                        fill={theme.palette.primary.main}
+                                                        label={false}
+                                                        isAnimationActive={true}
+                                                        animationDuration={800}
+                                                        animationBegin={300}
+                                                    >
+                                                        {summaryData.eventCounts.map((entry, index) => (
+                                                            <Cell
+                                                                key={`cell-${index}`}
+                                                                fill={COLORS[index % COLORS.length]}
+                                                                stroke={theme.palette.background.paper}
+                                                                strokeWidth={1}
+                                                            />
+                                                        ))}
+                                                    </Pie>
+                                                    <Tooltip
+                                                        formatter={(value) => [`${value} requests`, 'Count']}
+                                                        contentStyle={{
+                                                            backgroundColor: theme.palette.background.paper,
+                                                            color: theme.palette.text.primary,
+                                                            border: `1px solid ${theme.palette.divider}`,
+                                                            borderRadius: 4,
+                                                            boxShadow: theme.shadows[3],
+                                                            padding: '8px 12px',
+                                                        }}
+                                                        itemStyle={{
+                                                            color: theme.palette.text.primary,
+                                                        }}
+                                                        labelStyle={{
+                                                            color: theme.palette.text.secondary,
+                                                            fontWeight: 'bold',
+                                                            marginBottom: 4,
+                                                        }}
+                                                    />
+                                                    <Legend
+                                                        layout="horizontal"
+                                                        verticalAlign="bottom"
+                                                        align="center"
+                                                        iconSize={10}
+                                                        iconType="circle"
+                                                        formatter={(value, _, index) => {
+                                                            const total = summaryData.eventCounts.reduce((sum, item) => sum + item.count, 0);
+                                                            const item = summaryData.eventCounts[index];
+                                                            const percent = ((item.count / total) * 100).toFixed(0);
+
+                                                            const displayValue = isMobile && value.length > 12
+                                                                ? `${value.substring(0, 12)}...`
+                                                                : value;
+
+                                                            return (
+                                                                <span style={{ color: theme.palette.text.primary }}>
+                                                                    {displayValue} ({percent}%)
+                                                                </span>
+                                                            );
+                                                        }}
+                                                    />
+                                                </PieChart>
+                                            </ResponsiveContainer>
+                                        </Box>
                                     </CardContent>
                                 </Card>
                             </Grid>
 
                             <Grid item xs={12} md={6}>
-                                <Card>
+                                <Card variant="outlined">
                                     <CardContent>
-                                        <Typography variant="h6" gutterBottom>
+                                        <Typography variant="h6" gutterBottom color="text.secondary">
                                             Messages Per Day
                                         </Typography>
                                         <ResponsiveContainer width="100%" height={300}>
@@ -287,12 +400,35 @@ const MetricsDashboard = () => {
                                                 data={summaryData.messagesPerDay}
                                                 margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
                                             >
-                                                <CartesianGrid strokeDasharray="3 3" />
+                                                <CartesianGrid strokeDasharray="3 3" stroke={`${theme.palette.divider}80`} />
                                                 <XAxis dataKey="date" />
                                                 <YAxis />
-                                                <Tooltip />
+                                                <Tooltip
+                                                    formatter={(value) => [`${value}`, 'Messages']}
+                                                    contentStyle={{
+                                                        backgroundColor: theme.palette.background.paper,
+                                                        color: theme.palette.text.primary,
+                                                        border: `1px solid ${theme.palette.divider}`,
+                                                        borderRadius: 4,
+                                                        boxShadow: theme.shadows[3],
+                                                        padding: '8px 12px',
+                                                    }}
+                                                    itemStyle={{
+                                                        color: theme.palette.text.primary,
+                                                    }}
+                                                    labelStyle={{
+                                                        color: theme.palette.text.secondary,
+                                                        fontWeight: 'bold',
+                                                        marginBottom: 4,
+                                                    }}
+                                                />
                                                 <Legend />
-                                                <Line type="monotone" dataKey="count" stroke="#8884d8" activeDot={{ r: 8 }} />
+                                                <Line
+                                                    type="monotone"
+                                                    dataKey="count"
+                                                    stroke={theme.palette.primary.main}
+                                                    activeDot={{ r: 8 }}
+                                                />
                                             </LineChart>
                                         </ResponsiveContainer>
                                     </CardContent>
@@ -302,133 +438,211 @@ const MetricsDashboard = () => {
                     </>
                 )}
 
-                {/* Detailed Metrics Tab */}
                 {currentTab === 1 && (
-                    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-                        {isMetricsLoading ? (
-                            <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
-                                <CircularProgress />
-                            </Box>
-                        ) : (
-                            <>
-                                <TableContainer sx={{ maxHeight: 500 }}>
-                                    <Table stickyHeader>
-                                        <TableHead>
-                                            {table.getHeaderGroups().map(headerGroup => (
-                                                <TableRow key={headerGroup.id}>
-                                                    {headerGroup.headers.map(header => (
-                                                        <TableCell key={header.id} sx={{ fontWeight: 'bold' }}>
-                                                            {header.isPlaceholder ? null : (
-                                                                <Box
+                    <Card variant="outlined" sx={{ width: '100%', overflow: 'hidden' }}>
+                        <CardContent sx={{ p: { xs: 1, sm: 2 } }}>
+                            <Typography variant="h6" gutterBottom color="text.secondary">
+                                Detailed Metrics
+                            </Typography>
+                            {isMetricsLoading ? (
+                                <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
+                                    <CircularProgress />
+                                </Box>
+                            ) : (
+                                <>
+                                    {isMobile && (
+                                        <Typography variant="caption" sx={{ display: 'block', mb: 1, color: 'text.secondary' }}>
+                                            Swipe horizontally to see more data →
+                                        </Typography>
+                                    )}
+                                    <Box sx={{
+                                        overflowX: 'auto',
+                                        '&::-webkit-scrollbar': {
+                                            height: '8px',
+                                        },
+                                        '&::-webkit-scrollbar-thumb': {
+                                            backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)',
+                                            borderRadius: '4px',
+                                        },
+                                        '&::-webkit-scrollbar-track': {
+                                            backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)',
+                                        },
+                                    }}>
+                                        <TableContainer sx={{ maxHeight: { xs: 400, sm: 500 } }}>
+                                            <Table stickyHeader size={isMobile ? "small" : "medium"}>
+                                                <TableHead>
+                                                    {table.getHeaderGroups().map(headerGroup => (
+                                                        <TableRow key={headerGroup.id}>
+                                                            {headerGroup.headers.map(header => (
+                                                                <TableCell
+                                                                    key={header.id}
                                                                     sx={{
-                                                                        display: 'flex',
-                                                                        alignItems: 'center',
-                                                                        cursor: header.column.getCanSort() ? 'pointer' : 'default',
+                                                                        fontWeight: 'bold',
+                                                                        whiteSpace: 'nowrap',
+                                                                        px: { xs: 1, sm: 2 },
+                                                                        py: { xs: 1, sm: 1.5 },
                                                                     }}
-                                                                    onClick={header.column.getToggleSortingHandler()}
+                                                                >
+                                                                    {header.isPlaceholder ? null : (
+                                                                        <Box
+                                                                            sx={{
+                                                                                display: 'flex',
+                                                                                alignItems: 'center',
+                                                                                cursor: header.column.getCanSort() ? 'pointer' : 'default',
+                                                                            }}
+                                                                            onClick={header.column.getToggleSortingHandler()}
+                                                                        >
+                                                                            {flexRender(
+                                                                                header.column.columnDef.header,
+                                                                                header.getContext()
+                                                                            )}
+                                                                            {{
+                                                                                asc: <ArrowUpwardIcon fontSize="small" sx={{ ml: 0.5 }} />,
+                                                                                desc: <ArrowDownwardIcon fontSize="small" sx={{ ml: 0.5 }} />,
+                                                                            }[header.column.getIsSorted() as string] ?? null}
+                                                                        </Box>
+                                                                    )}
+                                                                </TableCell>
+                                                            ))}
+                                                        </TableRow>
+                                                    ))}
+                                                </TableHead>
+                                                <TableBody>
+                                                    {table.getRowModel().rows.map(row => (
+                                                        <TableRow key={row.id} hover>
+                                                            {row.getVisibleCells().map(cell => (
+                                                                <TableCell
+                                                                    key={cell.id}
+                                                                    sx={{
+                                                                        px: { xs: 1, sm: 2 },
+                                                                        py: { xs: 1, sm: 1.5 },
+                                                                        whiteSpace: 'nowrap'
+                                                                    }}
                                                                 >
                                                                     {flexRender(
-                                                                        header.column.columnDef.header,
-                                                                        header.getContext()
+                                                                        cell.column.columnDef.cell,
+                                                                        cell.getContext()
                                                                     )}
-                                                                    {{
-                                                                        asc: <ArrowUpwardIcon fontSize="small" sx={{ ml: 0.5 }} />,
-                                                                        desc: <ArrowDownwardIcon fontSize="small" sx={{ ml: 0.5 }} />,
-                                                                    }[header.column.getIsSorted() as string] ?? null}
-                                                                </Box>
-                                                            )}
-                                                        </TableCell>
+                                                                </TableCell>
+                                                            ))}
+                                                        </TableRow>
                                                     ))}
-                                                </TableRow>
-                                            ))}
-                                        </TableHead>
-                                        <TableBody>
-                                            {table.getRowModel().rows.map(row => (
-                                                <TableRow key={row.id} hover>
-                                                    {row.getVisibleCells().map(cell => (
-                                                        <TableCell key={cell.id}>
-                                                            {flexRender(
-                                                                cell.column.columnDef.cell,
-                                                                cell.getContext()
-                                                            )}
-                                                        </TableCell>
-                                                    ))}
-                                                </TableRow>
-                                            ))}
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
-                                <Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}>
-                                    <Pagination
-                                        count={Math.ceil((metricsData?.total || 0) / pageSize)}
-                                        page={metricsPage + 1}
-                                        onChange={(event, value) => handleMetricsPageChange(event, value)}
-                                        color="primary"
-                                    />
-                                </Box>
-                            </>
-                        )}
-                    </Paper>
+                                                </TableBody>
+                                            </Table>
+                                        </TableContainer>
+                                    </Box>
+                                    <Box sx={{ display: 'flex', justifyContent: 'center', px: 2, py: 1 }}>
+                                        <Pagination
+                                            count={Math.ceil((metricsData?.total || 0) / pageSize)}
+                                            page={metricsPage + 1}
+                                            onChange={handleMetricsPageChange}
+                                            color="primary"
+                                            size={isMobile ? "small" : "medium"}
+                                            siblingCount={isMobile ? 0 : 1}
+                                        />
+                                    </Box>
+                                </>
+                            )}
+                        </CardContent>
+                    </Card>
                 )}
 
-                {/* Logs Tab */}
                 {currentTab === 2 && (
-                    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-                        {isLogsLoading ? (
-                            <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
-                                <CircularProgress />
-                            </Box>
-                        ) : (
-                            <>
-                                <TableContainer sx={{ maxHeight: 500 }}>
-                                    <Table stickyHeader>
-                                        <TableHead>
-                                            <TableRow>
-                                                <TableCell sx={{ fontWeight: 'bold' }}>ID</TableCell>
-                                                <TableCell sx={{ fontWeight: 'bold' }}>Type</TableCell>
-                                                <TableCell sx={{ fontWeight: 'bold' }}>User Message</TableCell>
-                                                <TableCell sx={{ fontWeight: 'bold' }}>AI Response</TableCell>
-                                                <TableCell sx={{ fontWeight: 'bold' }}>Error</TableCell>
-                                                <TableCell sx={{ fontWeight: 'bold' }}>Timestamp</TableCell>
-                                            </TableRow>
-                                        </TableHead>
-                                        <TableBody>
-                                            {logsData?.logs.map((log: LogEntry) => (
-                                                <TableRow key={log.id} hover>
-                                                    <TableCell>{log.id}</TableCell>
-                                                    <TableCell>{log.request_type}</TableCell>
-                                                    <TableCell>
-                                                        {log.user_message && log.user_message.length > 100
-                                                            ? `${log.user_message.substring(0, 100)}...`
-                                                            : log.user_message || '-'}
-                                                    </TableCell>
-                                                    <TableCell>
-                                                        {log.ai_response && log.ai_response.length > 100
-                                                            ? `${log.ai_response.substring(0, 100)}...`
-                                                            : log.ai_response || '-'}
-                                                    </TableCell>
-                                                    <TableCell>{log.error || '-'}</TableCell>
-                                                    <TableCell>{new Date(log.timestamp).toLocaleString()}</TableCell>
-                                                </TableRow>
-                                            ))}
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
-                                <Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}>
-                                    <Pagination
-                                        count={Math.ceil((logsData?.total || 0) / pageSize)}
-                                        page={logsPage + 1}
-                                        onChange={(event, value) => handleLogsPageChange(event, value)}
-                                        color="primary"
-                                    />
+                    <Card variant="outlined" sx={{ width: '100%', overflow: 'hidden' }}>
+                        <CardContent sx={{ p: { xs: 1, sm: 2 } }}>
+                            <Typography variant="h6" gutterBottom color="text.secondary">
+                                System Logs
+                            </Typography>
+                            {isLogsLoading ? (
+                                <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
+                                    <CircularProgress />
                                 </Box>
-                            </>
-                        )}
-                    </Paper>
+                            ) : (
+                                <>
+                                    {isMobile && (
+                                        <Typography variant="caption" sx={{ display: 'block', mb: 1, color: 'text.secondary' }}>
+                                            Swipe horizontally to see more data →
+                                        </Typography>
+                                    )}
+                                    <Box
+                                        sx={{
+                                            width: '100%',
+                                            overflowX: 'auto',
+                                            WebkitOverflowScrolling: 'touch', // Enable momentum scrolling on iOS
+                                            msOverflowStyle: '-ms-autohiding-scrollbar', // Better experience on Edge
+                                            scrollbarWidth: 'thin',
+                                            '&::-webkit-scrollbar': {
+                                                height: '8px',
+                                            },
+                                            '&::-webkit-scrollbar-thumb': {
+                                                backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)',
+                                                borderRadius: '4px',
+                                            },
+                                            '&::-webkit-scrollbar-track': {
+                                                backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)',
+                                            },
+                                        }}
+                                    >
+                                        <Table
+                                            stickyHeader
+                                            size={isMobile ? "small" : "medium"}
+                                            sx={{
+                                                minWidth: isMobile ? 600 : 800, // Force minimum width to ensure scrolling
+                                            }}
+                                        >
+                                            <TableHead>
+                                                <TableRow>
+                                                    <TableCell sx={{ fontWeight: 'bold', px: { xs: 1, sm: 2 }, py: { xs: 1, sm: 1.5 } }}>ID</TableCell>
+                                                    <TableCell sx={{ fontWeight: 'bold', px: { xs: 1, sm: 2 }, py: { xs: 1, sm: 1.5 } }}>Type</TableCell>
+                                                    <TableCell sx={{ fontWeight: 'bold', px: { xs: 1, sm: 2 }, py: { xs: 1, sm: 1.5 }, minWidth: 150 }}>User Message</TableCell>
+                                                    <TableCell sx={{ fontWeight: 'bold', px: { xs: 1, sm: 2 }, py: { xs: 1, sm: 1.5 }, minWidth: 150 }}>AI Response</TableCell>
+                                                    <TableCell sx={{ fontWeight: 'bold', px: { xs: 1, sm: 2 }, py: { xs: 1, sm: 1.5 } }}>Error</TableCell>
+                                                    <TableCell sx={{ fontWeight: 'bold', px: { xs: 1, sm: 2 }, py: { xs: 1, sm: 1.5 } }}>Timestamp</TableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                {logsData?.logs.map((log: LogEntry) => (
+                                                    <TableRow key={log.id} hover>
+                                                        <TableCell sx={{ px: { xs: 1, sm: 2 }, py: { xs: 1, sm: 1.5 } }}>{log.id}</TableCell>
+                                                        <TableCell sx={{ px: { xs: 1, sm: 2 }, py: { xs: 1, sm: 1.5 } }}>{log.request_type}</TableCell>
+                                                        <TableCell sx={{ px: { xs: 1, sm: 2 }, py: { xs: 1, sm: 1.5 }, maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                                            {log.user_message && log.user_message.length > 100
+                                                                ? `${log.user_message.substring(0, 100)}...`
+                                                                : log.user_message || '-'}
+                                                        </TableCell>
+                                                        <TableCell sx={{ px: { xs: 1, sm: 2 }, py: { xs: 1, sm: 1.5 }, maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                                            {log.ai_response && log.ai_response.length > 100
+                                                                ? `${log.ai_response.substring(0, 100)}...`
+                                                                : log.ai_response || '-'}
+                                                        </TableCell>
+                                                        <TableCell sx={{ px: { xs: 1, sm: 2 }, py: { xs: 1, sm: 1.5 } }}>{log.error || '-'}</TableCell>
+                                                        <TableCell sx={{ px: { xs: 1, sm: 2 }, py: { xs: 1, sm: 1.5 }, whiteSpace: 'nowrap' }}>
+                                                            {isMobile
+                                                                ? new Date(log.timestamp).toLocaleTimeString()
+                                                                : new Date(log.timestamp).toLocaleString()
+                                                            }
+                                                        </TableCell>
+                                                    </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </Box>
+                                    <Box sx={{ display: 'flex', justifyContent: 'center', px: 2, py: 1, mt: 1 }}>
+                                        <Pagination
+                                            count={Math.ceil((logsData?.total || 0) / pageSize)}
+                                            page={logsPage + 1}
+                                            onChange={handleLogsPageChange}
+                                            color="primary"
+                                            size={isMobile ? "small" : "medium"}
+                                            siblingCount={isMobile ? 0 : 1}
+                                        />
+                                    </Box>
+                                </>
+                            )}
+                        </CardContent>
+                    </Card>
                 )}
-            </Box>
-
-            <Footer />
+            </Paper>
         </Box>
     );
 };

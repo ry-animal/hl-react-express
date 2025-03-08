@@ -37,12 +37,10 @@ const ChatInterface = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-    // Use the store for messages and message functions
     const messages = useStore((state) => state.messages);
     const addMessage = useStore((state) => state.addMessage);
     const setRequestStartTime = useStore((state) => state.setRequestStartTime);
 
-    // Auto-scroll to bottom when messages update
     useEffect(() => {
         scrollToBottom();
     }, [messages]);
@@ -52,37 +50,27 @@ const ChatInterface = () => {
     };
 
     const handleSendMessage = () => {
-        // Trim the message to check if it's not just whitespace
         const trimmedMessage = newMessage.trim();
 
         if (trimmedMessage) {
-            // Send the message
             sendMessageToBackend(trimmedMessage);
-
-            // No need to clear here as we do it in sendMessageToBackend for better UX
         }
     };
 
-    // Function to send message to backend
     const sendMessageToBackend = async (message: string) => {
         try {
-            // Set request start time for metrics
             setRequestStartTime(Date.now());
 
-            // Clear input field (moved this up to ensure UI feels responsive)
             setNewMessage('');
 
-            // First, add the user message to the chat
             addMessage({
                 text: message,
                 sender: 'user',
             });
 
-            // Choose between streaming and non-streaming API based on your preference
             const useStreaming = true;
 
             if (useStreaming) {
-                // Streaming implementation using fetch instead of EventSource for POST support
                 const response = await fetch('/api/chat/stream', {
                     method: 'POST',
                     headers: {
@@ -95,7 +83,6 @@ const ChatInterface = () => {
                     throw new Error('Failed to get streaming response from server');
                 }
 
-                // Add an empty bot message that will be updated
                 addMessage({
                     text: '',
                     sender: 'bot',
@@ -103,7 +90,6 @@ const ChatInterface = () => {
 
                 let fullResponse = '';
 
-                // Create a reader from the response body stream
                 if (!response.body) {
                     throw new Error('Response body is null');
                 }
@@ -111,12 +97,10 @@ const ChatInterface = () => {
                 const reader = response.body.getReader();
                 const decoder = new TextDecoder();
 
-                // Read the stream
                 while (true) {
                     const { done, value } = await reader.read();
                     if (done) break;
 
-                    // Decode the chunk and process it
                     const chunk = decoder.decode(value, { stream: true });
                     const lines = chunk.split('\n\n');
 
@@ -131,10 +115,8 @@ const ChatInterface = () => {
                             try {
                                 const data = JSON.parse(eventData);
 
-                                // Check for error messages from the server
                                 if (data.error) {
                                     console.error('Server streaming error:', data.error);
-                                    // Update the message to show the error
                                     addMessage(
                                         {
                                             text: `Error: ${data.error}`,
@@ -146,10 +128,8 @@ const ChatInterface = () => {
                                 }
 
                                 if (data.chunk) {
-                                    // Append the new chunk to our accumulated response
                                     fullResponse += data.chunk;
 
-                                    // Update the last message (which should be the bot's message)
                                     addMessage(
                                         {
                                             text: fullResponse,
@@ -165,7 +145,6 @@ const ChatInterface = () => {
                     }
                 }
             } else {
-                // Non-streaming implementation
                 const response = await fetch('/api/chat', {
                     method: 'POST',
                     headers: {
@@ -180,7 +159,6 @@ const ChatInterface = () => {
 
                 const data = await response.json();
 
-                // Add bot message using the store function
                 addMessage({
                     text: data.reply,
                     sender: 'bot',
@@ -189,7 +167,6 @@ const ChatInterface = () => {
         } catch (error) {
             console.error('Error sending message to backend:', error);
 
-            // Add error message
             addMessage({
                 text: "I'm sorry, I couldn't process your request. Please try again later.",
                 sender: 'bot',
@@ -256,7 +233,6 @@ const ChatInterface = () => {
                     border: `1px solid ${theme.palette.divider}`,
                 }}
             >
-                {/* Chat header with proper semantic heading - always green with white text */}
                 <Box
                     component="header"
                     sx={{
@@ -285,7 +261,6 @@ const ChatInterface = () => {
                     </Typography>
                 </Box>
 
-                {/* Messages area with improved aria attributes */}
                 <Box
                     sx={{
                         flexGrow: 1,
@@ -396,7 +371,6 @@ const ChatInterface = () => {
                     <div ref={messagesEndRef} />
                 </Box>
 
-                {/* Input area with accessible labels */}
                 <Box
                     component="footer"
                     sx={{

@@ -1,0 +1,1047 @@
+[
+  {
+  "name": "Aeir™",
+  "category": "Wild",
+  "series": "Limited Release",
+  "abv": 8.3
+  },
+  {
+  "name": "All Hands",
+  "category": "Barrel Aged",
+  "series": "10th Anniversary Series",
+  "abv": 12.7
+  },
+  {
+  "name": "Arctic Fox",
+  "category": "Malty",
+  "series": "Taproom only",
+  "abv": 6.5,
+  "ibu": 47
+  },
+  {
+  "name": "BallardWeizen",
+  "category": "Malty",
+  "series": "Taproom only",
+  "abv": 5.2,
+  "ibu": 30
+  },
+  {
+  "name": "Barn Raising",
+  "category": "Belgian",
+  "series": "Collaborations",
+  "abv": 4,
+  "ibu": 30
+  },
+  {
+  "name": "Barrel-Aged Lion’s Share",
+  "category": "Barrel Aged",
+  "series": "Limited Release",
+  "abv": 14
+  },
+  {
+  "name": "Barrel-Aged Stouter Limits",
+  "category": "Barrel Aged",
+  "series": "Taproom only",
+  "abv": 15
+  },
+  {
+  "name": "Barrels Out of Bond",
+  "category": "Wild",
+  "series": "Limited Release",
+  "abv": 9.1
+  },
+  {
+  "name": "Batch #2314: Fluff Coast IPA",
+  "category": "IPA",
+  "series": "Taproom only",
+  "abv": 7,
+  "ibu": 70
+  },
+  {
+  "name": "BBIS™",
+  "category": "Barrel Aged",
+  "series": "Limited Release",
+  "abv": 14
+  },
+  {
+  "name": "BBIS – Cognac Barrel™",
+  "category": "Barrel Aged",
+  "series": "Taproom only",
+  "abv": 14
+  },
+  {
+  "name": "BBIS – Muscat Barrel™",
+  "category": "Barrel Aged",
+  "series": "Taproom only",
+  "abv": 14
+  },
+  {
+  "name": "BBIS Amburana",
+  "category": "Barrel Aged",
+  "series": "Taproom only",
+  "abv": 14
+  },
+  {
+  "name": "BBIS Double Barrel™",
+  "category": "Barrel Aged",
+  "series": "Taproom only",
+  "abv": 16
+  },
+  {
+  "name": "BBIS Double Coconut™",
+  "category": "Barrel Aged",
+  "series": "Taproom only",
+  "abv": 15.5
+  },
+  {
+  "name": "BBIS Drowning in Syrup",
+  "category": "Barrel Aged",
+  "series": "Taproom only",
+  "abv": 14
+  },
+  {
+  "name": "BBIS Peanut Butter Cup",
+  "category": "Barrel Aged",
+  "series": "Taproom only",
+  "abv": 14
+  },
+  {
+  "name": "BBIS Vanilla Bean",
+  "category": "Barrel Aged",
+  "series": "Taproom only",
+  "abv": 14
+  },
+  {
+  "name": "Big Ol’ Gingerbread",
+  "category": "Dark",
+  "series": "Taproom only",
+  "abv": 11
+  },
+  {
+  "name": "Blimey That’s Bitter®",
+  "category": "Imperial IPA",
+  "series": "170 Series",
+  "abv": 10.5,
+  "ibu": 65
+  },
+  {
+  "name": "Brettania: Blackcurrant®",
+  "category": "Wild",
+  "series": "Limited Release",
+  "abv": 6.3
+  },
+  {
+  "name": "Brettania: Boysenberry",
+  "category": "Wild",
+  "series": "Taproom only",
+  "abv": 6.8
+  },
+  {
+  "name": "Brettania: Boysenberry and Blackberry®",
+  "category": "Wild",
+  "series": "Limited Release",
+  "abv": 6.3
+  },
+  {
+  "name": "Brettania: Guava®",
+  "category": "Wild",
+  "series": "Limited Release",
+  "abv": 6.3
+  },
+  {
+  "name": "Brettania: Windsor™",
+  "category": "Wild",
+  "series": "Taproom only",
+  "abv": 7.4
+  },
+  {
+  "name": "Brighten Up",
+  "category": "IPA",
+  "series": "Core",
+  "abv": 6,
+  "ibu": 62
+  },
+  {
+  "name": "Chocolate Box: Mango Chili Truffle",
+  "category": "Barrel Aged",
+  "series": "Taproom only",
+  "abv": 13.4
+  },
+  {
+  "name": "Christmas Crikey",
+  "category": "IPA",
+  "series": "West Coast IPA Series",
+  "abv": 6.8,
+  "ibu": 53
+  },
+  {
+  "name": "Crikey IPA®",
+  "category": "IPA",
+  "series": "Core",
+  "abv": 6.8,
+  "ibu": 53
+  },
+  {
+  "name": "Crispytown",
+  "category": "Lager",
+  "series": "Core",
+  "abv": 4.8,
+  "ibu": 30
+  },
+  {
+  "name": "Dark Munich Lager",
+  "category": "Lager",
+  "series": "Limited Release",
+  "abv": 5.3,
+  "ibu": 30
+  },
+  {
+  "name": "Dortmunder",
+  "category": "Lager",
+  "series": "Taproom only",
+  "abv": 5.5,
+  "ibu": 30
+  },
+  {
+  "name": "Experimental #2445",
+  "category": "Imperial IPA",
+  "series": "Taproom Only",
+  "abv": 13.5,
+  "ibu": 100
+  },
+  {
+  "name": "Farm & Oak: Apricot™",
+  "category": "Wild",
+  "series": "Taproom only",
+  "abv": 7.3
+  },
+  {
+  "name": "Farm & Oak: Aprium™",
+  "category": "Wild",
+  "series": "Limited Release",
+  "abv": 7.6
+  },
+  {
+  "name": "Farm & Oak: Montmorency Cherry™",
+  "category": "Wild",
+  "series": "Limited Release",
+  "abv": 7.6
+  },
+  {
+  "name": "Farm & Oak: Nectaplum™",
+  "category": "Wild",
+  "series": "Limited Release",
+  "abv": 7.7
+  },
+  {
+  "name": "Farm & Oak: Raspberry + Cherry",
+  "category": "Wild",
+  "series": "Taproom only",
+  "abv": 7.5
+  },
+  {
+  "name": "Farm Team",
+  "category": "Hazy Pale",
+  "series": "Limited Release",
+  "abv": 5.2,
+  "ibu": 35
+  },
+  {
+  "name": "Farm Team IPA",
+  "category": "IPA",
+  "series": "Limited Release",
+  "abv": 6,
+  "ibu": 58
+  },
+  {
+  "name": "Festive Ale",
+  "category": "Malty",
+  "series": "Limited Release",
+  "abv": 7.5,
+  "ibu": 43
+  },
+  {
+  "name": "Fluff Coast",
+  "category": "IPA",
+  "series": "West Coast IPA Series",
+  "abv": 7,
+  "ibu": 70
+  },
+
+  {
+  "category": "Limited Release",
+  "name": "Foreign Export Stout",
+  "style": "Dark",
+  "abv": 6.9,
+  "ibu": 56
+  },
+  {
+  "category": "Sours",
+  "name": "Fresh! Cranberry Orange",
+  "style": "Sour",
+  "abv": 4.7,
+  "ibu": 64
+  },
+  {
+  "category": "Limited Release",
+  "name": "Fruitfizz Sugar Plum",
+  "style": "Fruitfizz",
+  "abv": 4.6
+  },
+  {
+  "category": "Core",
+  "name": "Fruitfizz® Grapefruit",
+  "style": "Fruitfizz",
+  "abv": 5
+  },
+  {
+  "category": "Core",
+  "name": "Fruitfizz® Lemon & Lime",
+  "style": "Fruitfizz",
+  "abv": 5
+  },
+  {
+  "category": "Core",
+  "name": "Fruitfizz® Orange Zest",
+  "style": "Fruitfizz",
+  "abv": 5
+  },
+  {
+  "category": "Limited Release",
+  "name": "Gobsmacked!®",
+  "style": "Imperial IPA",
+  "abv": 10,
+  "ibu": 80
+  },
+  {
+  "category": "Core",
+  "name": "Hazealicious IPA®",
+  "style": "Hazy IPA",
+  "abv": 6,
+  "ibu": 45
+  },
+  {
+  "category": "Taproom only",
+  "name": "Heart of the Wood",
+  "style": "Wild",
+  "abv": 8
+  },
+  {
+  "category": "Taproom only",
+  "name": "Holiday Haze",
+  "style": "Hazy IPA",
+  "abv": 6,
+  "ibu": 45
+  },
+  {
+  "category": "Core",
+  "name": "Hop Tropic®",
+  "style": "IPA",
+  "abv": 6.2,
+  "ibu": 48
+  },
+  {
+  "category": "Lager Series",
+  "name": "Hopshine",
+  "style": "Lager",
+  "abv": 5.8,
+  "ibu": 35
+  },
+  {
+  "category": "Seasonal",
+  "name": "Hopsteady IPA",
+  "style": "IPA",
+  "abv": 6.9,
+  "ibu": 70
+  },
+  {
+  "category": "Taproom only",
+  "name": "Instant Vintage",
+  "style": "Barrel Aged",
+  "abv": 12.7
+  },
+  {
+  "category": "Limited Release",
+  "name": "It’s Berry Complicated",
+  "style": "Malty",
+  "abv": 5.6,
+  "ibu": 20
+  },
+  {
+  "category": "Seasonal",
+  "name": "Juice Party IPA",
+  "style": "Hazy IPA",
+  "abv": 6.7,
+  "ibu": 40
+  },
+  {
+  "category": "Limited Release",
+  "name": "Julebokk Winter Lager",
+  "style": "Lager",
+  "abv": 7,
+  "ibu": 34
+  },
+  {
+  "category": "Limited Release",
+  "name": "Kolsch",
+  "style": "Pale",
+  "abv": 5,
+  "ibu": 29
+  },
+  {
+  "category": "Limited Release",
+  "name": "Little Fox",
+  "style": "Malty",
+  "abv": 6.5,
+  "ibu": 47
+  },
+  {
+  "category": "West Coast IPA Series",
+  "name": "Making Waves",
+  "style": "IPA",
+  "abv": 5.6
+  },
+  {
+  "category": "Lager Series",
+  "name": "Northsun™",
+  "style": "Lager",
+  "abv": 5.3,
+  "ibu": 31
+  },
+  {
+  "category": "Collaborations",
+  "name": "Ombili (Métier Collab)",
+  "style": "IPA",
+  "abv": 6.7,
+  "ibu": 60
+  },
+  {
+  "category": "Taproom only",
+  "name": "Pillars of Gold™",
+  "style": "Wild",
+  "abv": 6.9,
+  "ibu": 26
+  },
+  {
+  "category": "Core",
+  "name": "Pilsner",
+  "style": "Lager",
+  "abv": 5.4,
+  "ibu": 35
+  },
+  {
+  "category": "Taproom only",
+  "name": "Puffs of Fluff",
+  "style": "Hazy IPA",
+  "abv": 7.5,
+  "ibu": 40
+  },
+  {
+  "category": "Seasonal",
+  "name": "Puffy IPA",
+  "style": "Hazy IPA",
+  "abv": 6.5
+  },
+  {
+  "category": "Limited Release",
+  "name": "Reuben Claus",
+  "style": "Dark",
+  "abv": 5.9,
+  "ibu": 30
+  },
+  {
+  "category": "Crush Series",
+  "name": "Reuben’s Citra Crush™",
+  "style": "Hazy IPA",
+  "abv": 7,
+  "ibu": 47
+  },
+  {
+  "category": "Crush Series",
+  "name": "Reuben’s Crush the Groove",
+  "style": "Hazy IPA",
+  "abv": 7,
+  "ibu": 50
+  },
+  {
+  "category": "Crush Series",
+  "name": "Reuben’s Crush the Slopes™",
+  "style": "Hazy IPA",
+  "abv": 7
+  },
+  {
+  "category": "Core",
+  "name": "Reuben’s Crushable™",
+  "style": "Hazy Pale",
+  "abv": 5.2,
+  "ibu": 26
+  },
+  {
+  "category": "Crush Series",
+  "name": "Reuben’s Galaxy Crush™",
+  "style": "Hazy IPA",
+  "abv": 7,
+  "ibu": 47
+  },
+  {
+  "category": "Crush Series",
+  "name": "Reuben’s Mosaic Crush™",
+  "style": "Hazy IPA",
+  "abv": 7,
+  "ibu": 47
+  },
+  {
+  "category": "Crush Series",
+  "name": "Reuben’s PNW Crush™",
+  "style": "Hazy IPA",
+  "abv": 7,
+  "ibu": 60
+  },
+  {
+  "category": "Taproom only",
+  "name": "Reuben’s Refresh: Non-Alcoholic IPA",
+  "style": "Non-Alcoholic",
+  "abv": "<0.5",
+  "ibu": 40
+  },
+  {
+  "category": "Taproom only",
+  "name": "Reuben’s Refresh: Non-Alcoholic Sour",
+  "style": "Non-Alcoholic",
+  "abv": "<0.5"
+  },
+  {
+  "category": "Crush Series",
+  "name": "Reuben’s Strata Crush",
+  "style": "Hazy IPA",
+  "abv": 7,
+  "ibu": 47
+  },
+  {
+  "category": "Taproom only",
+  "name": "Reuben’s Triple Crush™",
+  "style": "Hazy IPA",
+  "abv": 10,
+  "ibu": 60
+  },
+  {
+  "category": "Taproom only",
+  "name": "Riddles in the Dark",
+  "style": "Wild",
+  "abv": 13
+  },
+  {
+  "category": "Limited Release",
+  "name": "Roasted Rye IPA",
+  "style": "IPA",
+  "abv": 7,
+  "ibu": 80
+  },
+  {
+  "category": "Core",
+  "name": "Robust Porter",
+  "style": "Dark",
+  "abv": 5.9,
+  "ibu": 30
+  },
+  {
+  "category": "Taproom only",
+  "name": "Roggenbier",
+  "style": "Malty",
+  "abv": 5.3,
+  "ibu": 19
+  },
+  {
+  "category": "Collaborations",
+  "name": "Serious Pilsner",
+  "style": "Lager",
+  "abv": 5.8,
+  "ibu": 35
+  },
+  {
+  "category": "Taproom only",
+  "name": "Silk & Pearls",
+  "style": "Barrel Aged",
+  "abv": 14
+  },
+  {
+  "category": "Lager Series",
+  "name": "Silver Fern",
+  "style": "Lager",
+  "abv": 5.6,
+  "ibu": 40
+  },
+  {
+  "category": "Seasonal",
+  "name": "Skyglow IPA",
+  "style": "IPA",
+  "abv": 6.7,
+  "ibu": 60
+  },
+  {
+  "category": "West Coast IPA Series",
+  "name": "South-Up",
+  "style": "IPA",
+  "abv": 6.7,
+  "ibu": 45
+  },
+  {
+  "category": "Lager Series",
+  "name": "Southsun™",
+  "style": "Lager",
+  "abv": 4.8,
+  "ibu": 20
+  },
+  {
+  "category": "Seasonal",
+  "name": "Stay Frosty IPA™",
+  "style": "IPA",
+  "abv": 6.9,
+  "ibu": 50
+  },
+  {
+  "category": "Seasonal",
+  "name": "Summer IPA",
+  "style": "IPA",
+  "abv": 6.5,
+  "ibu": 50
+  },
+  {
+  "category": "Limited Release",
+  "name": "Supernova",
+  "style": "Hazy IPA",
+  "abv": 9,
+  "ibu": 50
+  },
+  {
+  "category": "Taproom only",
+  "name": "The Crows (2022)",
+  "style": "Barrel Aged",
+  "abv": 15.7
+  },
+  {
+  "category": "Taproom only",
+  "name": "The Crows (2023)",
+  "style": "Barrel Aged",
+  "abv": 15.7
+  },
+  {
+  "category": "Limited Release",
+  "name": "The Crows (2024)",
+  "style": "Barrel Aged",
+  "abv": 15.7
+  },
+  {
+  "category": "Limited Release",
+  "name": "The Lion’s Share",
+  "style": "Dark",
+  "abv": 12.6
+  },
+  {
+  "category": "Limited Release",
+  "name": "Three Ryes Men®",
+  "style": "Barrel Aged",
+  "abv": 13.7
+  },
+  {
+  "category": "Taproom only",
+  "name": "Three Ryes Men – Brandy™",
+  "style": "Barrel Aged",
+  "abv": 15.2
+  },
+  {
+  "category": "Taproom only",
+  "name": "Three Ryes Men – Chocolate Royale™",
+  "style": "Barrel Aged",
+  "abv": 13.7
+  },
+  {
+  "category": "Taproom only",
+  "name": "Three Ryes Men – Cinnamon™",
+  "style": "Barrel Aged",
+  "abv": 15.2
+  },
+  {
+  "category": "Taproom only",
+  "name": "Three Ryes Men: Apple Pie",
+  "style": "Barrel Aged",
+  "abv": 13.7
+  },
+  {
+  "category": "Taproom only",
+  "name": "Three Ryes Men: Pecan Pie",
+  "style": "Barrel Aged",
+  "abv": 13.7
+  },
+  {
+  "category": "Taproom only",
+  "name": "Three Ryes Men: Pineapple Upside Down Cake",
+  "style": "Barrel Aged",
+  "abv": 13.7
+  },
+  {
+  "category": "Taproom only",
+  "name": "Three Ryes Men: Rum Ball",
+  "style": "Barrel Aged",
+  "abv": 13.7
+  },
+  {
+  "category": "Taproom only",
+  "name": "Tropical Funk",
+  "style": "Wild",
+  "abv": 5.9
+  },
+  {
+  "category": "Taproom only",
+  "name": "Warren’s Pub Cider®",
+  "style": "Cider",
+  "abv": 6
+  },
+  {
+  "category": "Collaborations",
+  "name": "West of Paris",
+  "style": "Lager",
+  "abv": 5.7,
+  "ibu": 35
+  },
+  {
+  "category": "Taproom only",
+  "name": "Wolfsburg Lager",
+  "style": "Lager",
+  "abv": 4.8,
+  "ibu": 16
+  },
+  {
+  "category": "Limited Release",
+  "name": "Wormwood Scrubs",
+  "style": "Wild",
+  "abv": 9.9
+  },
+  {
+  "category": "Taproom only",
+  "name": "Yakima Pure",
+  "style": "Non-Alcoholic",
+  "abv": 0.0
+  },
+  {
+  "category": "Limited Release",
+  "name": "(You Should) Smile More",
+  "style": "IPA",
+  "abv": 6,
+  "status": "Out of Production"
+  },
+  {
+  "category": "Taproom only",
+  "name": "2021 BBIS Barrel 7™",
+  "style": "Barrel Aged",
+  "abv": 13.7,
+  "status": "Out of Production"
+  },
+  {
+  "category": "10th Anniversary Series",
+  "name": "6:1",
+  "style": "Lager",
+  "abv": 5.1,
+  "ibu": 50,
+  "status": "Out of Production"
+  },
+  {
+  "category": "Limited Release",
+  "name": "7 Years of Defiance",
+  "style": "Hazy IPA",
+  "abv": 6,
+  "ibu": 50,
+  "status": "Out of Production"
+  },
+  {
+  "category": "Collaborations",
+  "name": "7/10 Split",
+  "style": "Sour",
+  "abv": 4.5,
+  "status": "Out of Production"
+  },
+  {
+  "category": "Taproom only",
+  "name": "9th Anniversary Barrel-Aged Blend",
+  "style": "Barrel Aged",
+  "abv": 14.6,
+  "ibu": 22,
+  "status": "Out of Production"
+  },
+  {
+  "category": "Limited Release",
+  "name": "Aerial Duel",
+  "style": "IPA",
+  "abv": 5.8,
+  "ibu": 55,
+  "status": "Out of Production"
+  },
+  {
+  "category": "Taproom only",
+  "name": "Alpenglow",
+  "style": "Hazy IPA",
+  "abv": 7,
+  "ibu": 45,
+  "status": "Out of Production"
+  },
+  {
+  "category": "Limited Release",
+  "name": "Alpenglow: Fresh Hop Mosaic Edition",
+  "style": "Hazy IPA",
+  "abv": 7,
+  "ibu": 120,
+  "status": "Out of Production"
+  },
+  {
+  "category": "Taproom only",
+  "name": "Alpenglow: Galaxy Edition",
+  "style": "Hazy IPA",
+  "abv": 7,
+  "status": "Out of Production"
+  },
+  {
+  "category": "Taproom only",
+  "name": "Alpenglow: HBC 1019 Edition™",
+  "style": "Hazy IPA",
+  "abv": 7,
+  "ibu": 45,
+  "status": "Out of Production"
+  },
+  {
+  "category": "Taproom only",
+  "name": "Alpenglow: Idaho 7 Edition™",
+  "style": "Hazy IPA",
+  "abv": 7,
+  "ibu": 45,
+  "status": "Out of Production"
+  },
+  {
+  "category": "Taproom only",
+  "name": "Alpenglow: New Zealand Edition",
+  "style": "Hazy IPA",
+  "abv": 7,
+  "ibu": 45,
+  "status": "Out of Production"
+  },
+  {
+  "category": "Taproom only",
+  "name": "Alpenglow: Riwaka Edition™",
+  "style": "Hazy IPA",
+  "abv": 7,
+  "ibu": 45,
+  "status": "Out of Production"
+  },
+  {
+  "category": "Taproom only",
+  "name": "Alpenglow: Talus Edition",
+  "style": "Hazy IPA",
+  "abv": 7,
+  "ibu": 45,
+  "status": "Out of Production"
+  },
+  {
+  "category": "Taproom only",
+  "name": "Altbier",
+  "style": "Lager",
+  "abv": 5.1,
+  "ibu": 32,
+  "status": "Out of Production"
+  },
+  {
+  "category": "Limited Release",
+  "name": "American Brown Ale",
+  "style": "Malty",
+  "abv": 5.9,
+  "ibu": 36,
+  "status": "Out of Production"
+  },
+  {
+  "category": "Taproom only",
+  "name": "American Rye",
+  "style": "Malty",
+  "abv": 5.4,
+  "ibu": 32,
+  "status": "Out of Production"
+  },
+  {
+  "category": "Limited Release",
+  "name": "Après Ski",
+  "style": "Sour",
+  "abv": 3.5,
+  "status": "Out of Production"
+  },
+  {
+  "category": "Lager Series",
+  "name": "Apropils",
+  "style": "Lager",
+  "abv": 5.7,
+  "ibu": 28,
+  "status": "Out of Production"
+  },
+  {
+  "category": "Limited Release",
+  "name": "Auspicious Sons®",
+  "style": "Imperial IPA",
+  "abv": 8.8,
+  "ibu": 60,
+  "status": "Out of Production"
+  },
+  {
+  "category": "Seasonal",
+  "name": "Autumn Harvest",
+  "style": "Dark",
+  "abv": 8.7,
+  "ibu": 22,
+  "status": "Out of Production"
+  },
+  {
+  "category": "Limited Release",
+  "name": "Bap Rice Lager",
+  "style": "Lager",
+  "abv": 4.5,
+  "ibu": 17,
+  "status": "Out of Production"
+  },
+  {
+  "category": "10th Anniversary Series",
+  "name": "Barnacles",
+  "style": "Dark",
+  "abv": 11.75,
+  "ibu": 68,
+  "status": "Out of Production"
+  },
+  {
+  "category": "Taproom only",
+  "name": "Barrel-Aged Barnacles",
+  "style": "Barrel Aged",
+  "abv": 15.1,
+  "status": "Out of Production"
+  },
+  {
+  "category": "Taproom only",
+  "name": "Batch #2291: Fluffy IPA",
+  "style": "Hazy IPA",
+  "abv": 6.5,
+  "ibu": 30,
+  "status": "Out of Production"
+  },
+  {
+  "category": "Taproom only",
+  "name": "Batch #2299 Southern Hemisphere IPA",
+  "style": "IPA",
+  "abv": 6.7,
+  "ibu": 45,
+  "status": "Out of Production"
+  },
+  {
+  "category": "170 Series",
+  "name": "Battersea",
+  "style": "Lager",
+  "abv": 8.2,
+  "ibu": 39,
+  "status": "Out of Production"
+  },
+  {
+  "category": "Taproom only",
+  "name": "Bavarian Hefeweizen",
+  "style": "Pale",
+  "abv": 6,
+  "ibu": 15,
+  "status": "Out of Production"
+  },
+  {
+  "category": "Collaborations",
+  "name": "Bear Mug™",
+  "style": "Dark",
+  "abv": 5.9,
+  "ibu": 30,
+  "status": "Out of Production"
+  },
+  {
+  "category": "10th Anniversary Series",
+  "name": "Beer Committee",
+  "style": "Belgian",
+  "abv": 6,
+  "status": "Out of Production"
+  },
+  {
+  "category": "Limited Release",
+  "name": "Belgian Pale Ale",
+  "style": "Belgian",
+  "abv": 5.8,
+  "ibu": 29,
+  "status": "Out of Production"
+  },
+  {
+  "category": "Taproom only",
+  "name": "Beta IPA",
+  "style": "IPA",
+  "abv": 7,
+  "ibu": 58,
+  "status": "Out of Production"
+  },
+  {
+  "category": "Lager Series",
+  "name": "Betonbier Pils™",
+  "style": "Lager",
+  "abv": 5.3,
+  "ibu": 45,
+  "status": "Out of Production"
+  },
+  {
+  "category": "Taproom only",
+  "name": "Bière De Noël",
+  "style": "Belgian",
+  "abv": 7.5,
+  "ibu": 29,
+  "status": "Out of Production"
+  },
+  {
+  "category": "Limited Release",
+  "name": "Big Mountain Lager",
+  "style": "Lager",
+  "abv": 4.9,
+  "ibu": 31,
+  "status": "Out of Production"
+  },
+  {
+  "category": "Limited Release",
+  "name": "Big Whoop",
+  "style": "IPA",
+  "abv": 4.2,
+  "ibu": 35,
+  "status": "Out of Production"
+  },
+  {
+  "category": "Seasonal",
+  "name": "Bits & Bobs IPA®",
+  "style": "IPA",
+  "abv": 7,
+  "ibu": 50,
+  "status": "Out of Production"
+  },
+  {
+  "category": "Taproom only",
+  "name": "Bits Alpha",
+  "style": "IPA",
+  "abv": 7,
+  "ibu": 50,
+  "status": "Out of Production"
+  },
+  {
+  "category": "Taproom only",
+  "name": "Bits Beta V.3",
+  "style": "IPA",
+  "abv": 7,
+  "ibu": 50,
+  "status": "Out of Production"
+  },
+  {
+  "category": "Unbound Series",
+  "name": "Bitsier and Bobsier™",
+  "style": "Imperial IPA",
+  "abv": 9.0,
+  "ibu": 50,
+  "status": "Out of Production"
+  }
+]
