@@ -4,8 +4,6 @@ Product Requirements Document: AI-Powered Business Chatbot
 
 This project aims to build a responsive and interactive chatbot application designed to answer user questions about a specific small-to-medium business. The application will leverage a Large Language Model (LLM) for natural language understanding and response generation, complemented by data from a public API to enhance the chatbot's capabilities. The application will be built using a React frontend with Material UI for a user-friendly interface, and optionally, a Node.js backend for improved security and data management. The primary objective is to demonstrate proficiency in integrating LLMs and external APIs, structuring code, handling data flow, and creating a functional, user-friendly chatbot experience.
 
-Business Focus: "The Daily Grind" - A fictional local coffee shop.
-
 2. User Flow:
 
 User Opens Application: User accesses the chatbot application through a web browser.
@@ -53,18 +51,21 @@ Fallback Responses: Handling of unknown information with appropriate fallback me
 (Optional) Streaming Responses: Displaying LLM responses in real-time.
 (Optional) Metrics Display: Showing usage metrics like message count and response time.
 (Optional) Backend Integration: Handling LLM and API requests through a Node.js backend.
-Error Handling: Graceful handling of API errors and network issues. 5. In-scope & Out-of-scope:
+Error Handling: Graceful handling of API errors and network issues.
+
+5. In-scope & Out-of-scope:
 
 In-scope:
 
 Building a React-based chat interface.
 Integrating with the OpenAI API for LLM functionality.
-Integrating with the OpenWeatherMap API for weather information.
+Integrating with the OpenWeatherMap API or other public APIs
 Implementing contextual prompt engineering.
 Handling basic error scenarios.
-Creating a functional chatbot that answers questions about "The Daily Grind."
+Creating a functional chatbot that answers questions
 (Preferred) Creating a minimal Node.js backend to proxy API calls.
 Creation of a Readme.md file with installation and run instructions.
+
 Out-of-scope:
 
 Advanced user authentication or authorization.

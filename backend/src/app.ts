@@ -1,9 +1,11 @@
-import express from 'express';
-import cors from 'cors';
 import path from 'path';
-import dotenv from 'dotenv';
 
-import userRoutes from './routes/userRoutes';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import express from 'express';
+
+import chatRoutes from './routes/chatRoutes';
+import metricsRoutes from './routes/metricsRoutes';
 
 // Load environment variables
 dotenv.config();
@@ -16,15 +18,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Determine the static files path
-const staticPath = process.env.NODE_ENV === 'production' 
-  ? path.join(process.cwd(), 'public')  // In Docker: /app/public
-  : path.join(__dirname, '../public');  // In development: ../public
+const staticPath =
+  process.env.NODE_ENV === 'production'
+    ? path.join(process.cwd(), 'public') // In Docker: /app/public
+    : path.join(__dirname, '../public'); // In development: ../public
 
 // Serve static files from the determined path
 app.use(express.static(staticPath));
 
 // API routes
-app.use('/api/users', userRoutes);
+app.use('/api/chat', chatRoutes);
+app.use('/api/metrics', metricsRoutes);
 
 // Default route for API
 app.get('/api', (req, res) => {
@@ -38,4 +42,4 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-export default app; 
+export default app;

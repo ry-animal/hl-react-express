@@ -6,7 +6,7 @@ const PORT = process.env.PORT || 3000;
 const startServer = async () => {
   try {
     await dbPromise;
-    
+
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
@@ -16,4 +16,4 @@ const startServer = async () => {
   }
 };
 
-export default startServer; 
+export default startServer;

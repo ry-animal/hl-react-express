@@ -1,5 +1,6 @@
-import type { Config } from 'drizzle-kit';
 import path from 'path';
+
+import type { Config } from 'drizzle-kit';
 
 export default {
   schema: './src/db/schema.ts',
@@ -8,4 +9,4 @@ export default {
   dbCredentials: {
     url: path.join(__dirname, 'db.sqlite'),
   },
-} satisfies Config; 
+} satisfies Config;

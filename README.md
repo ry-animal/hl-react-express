@@ -1,6 +1,7 @@
 # Reuben's Brews Chatbot
 
 - A full-stack application built with React, Express, and SQLite.
+- Features an AI-powered chatbot with OpenAI integration and metrics dashboard geared towards serving Reuben's Brews.
 - [Reuben's Brews](https://reubensbrews.com/)
 
 ## Tech Stack
@@ -11,14 +12,17 @@
 - Vite as build tool
 - Material UI for components
 - TanStack Query for data fetching
-- Axios for API requests
+- TanStack Table for interactive data tables
+- Recharts for data visualization
+- Zod for runtime type validation
 
 ### Backend
 
 - Node.js with Express
 - TypeScript
-- SQLite database
-- Drizzle ORM for database operations
+- SQLite database for metrics storage
+- OpenAI API integration for chat capabilities
+- Server-Sent Events (SSE) for streaming responses
 
 ## Project Structure
 
@@ -30,15 +34,17 @@ project-root/
   │   ├── src/         # Source code
   │   │   ├── controllers/
   │   │   ├── routes/
-  │   │   ├── db/      # Database related files
-  │   │   ├── app.ts   # Express app setup
-  │   │   ├── server.ts
-  │   │   └── index.ts # Entry point
+  │   │   ├── services/  # Business logic and database services
+  │   │   ├── utils/     # Helper functions including OpenAI service
+  │   │   ├── app.ts     # Express app setup
+  │   │   └── index.ts   # Entry point
   │   └── ...
   │
   ├── frontend/        # React frontend
   │   ├── src/
   │   │   ├── components/
+  │   │   ├── services/  # API services
+  │   │   ├── store/     # State management
   │   │   ├── App.tsx
   │   │   └── ...
   │   └── ...
@@ -46,72 +52,76 @@ project-root/
   └── README.md
 ```
 
+## Features
+
+- AI-Powered Chatbot: Contextual conversations using OpenAI's GPT models
+- Real-time Streaming: See responses as they're generated
+- Metrics Dashboard: Track usage and performance with interactive charts
+- Database Storage: Persistent SQLite storage for metrics data
+- Zod Validation: Runtime type safety across frontend and backend
+- Docker Support: Containerized deployment with persistent storage
+
 ## Setup Instructions
 
 ### Prerequisites
 
 - Node.js (v16 or higher)
 - npm or yarn
+- OpenAI API key
 
 ### Backend Setup
 
-1. Navigate to the backend directory:
+- Navigate to the backend directory:
 
-   ```
-   cd backend
-   ```
+  `cd backend`
 
-2. Install dependencies:
+- Create a .env file with the following content:
 
-   ```
-   npm install
-   ```
+  ```
+  PORT=3000
+  NODE_ENV=development
+  OPENAI_API_KEY=your_openai_api_key_here
+  ```
 
-3. Create a `.env` file with the following content:
+- Install dependencies:
 
-   ```
-   PORT=3000
-   NODE_ENV=development
-   ```
+  `npm install`
 
-4. Initialize the database:
+- Run DB migrations
 
-   ```
-   npm run push:sqlite
-   ```
+  `npm run push:sqlite`
 
-5. Start the development server:
-   ```
-   npm run dev
-   ```
+- Start the development server:
+
+  `npm run dev`
 
 ### Frontend Setup
 
-1. Navigate to the frontend directory:
+- Navigate to the frontend directory:
 
-   ```
-   cd frontend
-   ```
+  `cd frontend`
 
-2. Install dependencies:
+- Install dependencies:
 
-   ```
-   npm install
-   ```
+  `npm install`
 
-3. Start the development server:
+- Start the development server:
 
-   ```
-   npm run dev
-   ```
+  `npm run dev`
 
-4. Open your browser and navigate to `http://localhost:5173`
+- Open your browser and navigate to http://localhost:5173
 
 ## API Endpoints
 
-- `GET /api/users` - Get all users
-- `GET /api/users/:id` - Get a specific user by ID
-- `POST /api/users` - Create a new user
+### Chat Endpoints
+
+- POST /api/chat - Send a message to the chatbot
+- POST /api/chat/stream - Stream a response from the chatbot
+
+### Metrics Endpoints
+
+- GET /api/metrics/summary - Get metrics summary for dashboard
+- GET /api/metrics - Get detailed metrics with pagination
 
 ## Development
 
@@ -126,4 +136,23 @@ project-root/
 - Run `npm run dev` to start the development server
 - Run `npm run build` to build for production
 - Run `npm run preview` to preview the production build locally
-# hl-react-express
+
+## Docker Deployment
+
+- Build and start containers, make sure to create a .env from the .env.sample in /backend
+
+  ```bash
+  docker-compose up -d --build
+  ```
+
+- View logs
+
+  ```bash
+  npm run docker:logs
+  ```
+
+- Stop containers
+
+  ```bash
+  npm run docker:down
+  ```

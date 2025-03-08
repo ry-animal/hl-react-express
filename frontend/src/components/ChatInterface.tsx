@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import SendIcon from '@mui/icons-material/Send';
 import {
     Box,
     TextField,
@@ -10,17 +10,16 @@ import {
     Stack,
     Card,
     CardContent,
-    darken
+    darken,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import SendIcon from '@mui/icons-material/Send';
+import { useState, useRef, useEffect } from 'react';
+
 import useStore from '../store/useStore';
 
-// Constants for the fixed header color - using the light theme green color
 const HEADER_BG_COLOR = '#2e7d32'; // Light theme green
 const HEADER_TEXT_COLOR = '#ffffff'; // White text
 
-// Custom font styles for the header title
 const headerTitleStyles = {
     fontFamily: "'Montserrat', sans-serif",
     textTransform: 'uppercase',
@@ -39,9 +38,9 @@ const ChatInterface = () => {
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     // Use the store for messages and message functions
-    const messages = useStore(state => state.messages);
-    const addMessage = useStore(state => state.addMessage);
-    const setRequestStartTime = useStore(state => state.setRequestStartTime);
+    const messages = useStore((state) => state.messages);
+    const addMessage = useStore((state) => state.addMessage);
+    const setRequestStartTime = useStore((state) => state.setRequestStartTime);
 
     // Auto-scroll to bottom when messages update
     useEffect(() => {
@@ -53,49 +52,148 @@ const ChatInterface = () => {
     };
 
     const handleSendMessage = () => {
-        if (newMessage.trim() === '') return;
+        // Trim the message to check if it's not just whitespace
+        const trimmedMessage = newMessage.trim();
 
-        // Add user message using the store function
-        addMessage({
-            text: newMessage,
-            sender: 'user'
-        });
+        if (trimmedMessage) {
+            // Send the message
+            sendMessageToBackend(trimmedMessage);
 
-        setNewMessage('');
-
-        // Set request start time for measuring response time
-        setRequestStartTime(Date.now());
-
-        // For now, simulate bot response
-        // In the future, we'll integrate with a real backend API
-        sendMessageToBackend(newMessage);
+            // No need to clear here as we do it in sendMessageToBackend for better UX
+        }
     };
 
-    // Function to send message to backend (to be implemented)
+    // Function to send message to backend
     const sendMessageToBackend = async (message: string) => {
         try {
-            // Using message variable in a comment to avoid linter warning
-            // Will use this message parameter when implementing the actual API call
-            console.log(`Will send message to backend: ${message}`);
+            // Set request start time for metrics
+            setRequestStartTime(Date.now());
 
-            // Simulate API delay
-            setTimeout(() => {
+            // Clear input field (moved this up to ensure UI feels responsive)
+            setNewMessage('');
+
+            // First, add the user message to the chat
+            addMessage({
+                text: message,
+                sender: 'user',
+            });
+
+            // Choose between streaming and non-streaming API based on your preference
+            const useStreaming = true;
+
+            if (useStreaming) {
+                // Streaming implementation using fetch instead of EventSource for POST support
+                const response = await fetch('/api/chat/stream', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to get streaming response from server');
+                }
+
+                // Add an empty bot message that will be updated
+                addMessage({
+                    text: '',
+                    sender: 'bot',
+                });
+
+                let fullResponse = '';
+
+                // Create a reader from the response body stream
+                if (!response.body) {
+                    throw new Error('Response body is null');
+                }
+
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+
+                // Read the stream
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+
+                    // Decode the chunk and process it
+                    const chunk = decoder.decode(value, { stream: true });
+                    const lines = chunk.split('\n\n');
+
+                    for (const line of lines) {
+                        if (line.startsWith('data: ')) {
+                            const eventData = line.substring(6);
+
+                            if (eventData === '[DONE]') {
+                                break;
+                            }
+
+                            try {
+                                const data = JSON.parse(eventData);
+
+                                // Check for error messages from the server
+                                if (data.error) {
+                                    console.error('Server streaming error:', data.error);
+                                    // Update the message to show the error
+                                    addMessage(
+                                        {
+                                            text: `Error: ${data.error}`,
+                                            sender: 'bot',
+                                        },
+                                        true
+                                    );
+                                    break;
+                                }
+
+                                if (data.chunk) {
+                                    // Append the new chunk to our accumulated response
+                                    fullResponse += data.chunk;
+
+                                    // Update the last message (which should be the bot's message)
+                                    addMessage(
+                                        {
+                                            text: fullResponse,
+                                            sender: 'bot',
+                                        },
+                                        true
+                                    );
+                                }
+                            } catch (err) {
+                                console.error('Error parsing stream data:', err);
+                            }
+                        }
+                    }
+                }
+            } else {
+                // Non-streaming implementation
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to get response from server');
+                }
+
+                const data = await response.json();
+
                 // Add bot message using the store function
                 addMessage({
-                    text: "I'm a demo bot response. In a real app, this would come from the backend API.",
-                    sender: 'bot'
+                    text: data.reply,
+                    sender: 'bot',
                 });
-            }, 1000);
-
-            // In the future, we'll implement actual API call:
-            // const response = await axios.post('/api/chat', { message });
-            // addMessage({
-            //   text: response.data.reply,
-            //   sender: 'bot'
-            // });
+            }
         } catch (error) {
             console.error('Error sending message to backend:', error);
-            // Handle error (e.g., show error message)
+
+            // Add error message
+            addMessage({
+                text: "I'm sorry, I couldn't process your request. Please try again later.",
+                sender: 'bot',
+            });
         }
     };
 
@@ -140,7 +238,7 @@ const ChatInterface = () => {
                 justifyContent: 'center',
                 width: '100%',
                 maxWidth: '1000px',
-                height: '100%'
+                height: '100%',
             }}
             role="region"
             aria-label="Chat conversation"
@@ -155,7 +253,7 @@ const ChatInterface = () => {
                     maxHeight: { xs: 'calc(100vh - 180px)', sm: '70vh' },
                     overflow: 'hidden',
                     borderRadius: 2,
-                    border: `1px solid ${theme.palette.divider}`
+                    border: `1px solid ${theme.palette.divider}`,
                 }}
             >
                 {/* Chat header with proper semantic heading - always green with white text */}
@@ -169,7 +267,7 @@ const ChatInterface = () => {
                         justifyContent: 'center',
                         gap: { xs: 1, sm: 2 },
                         backgroundColor: HEADER_BG_COLOR,
-                        color: HEADER_TEXT_COLOR
+                        color: HEADER_TEXT_COLOR,
                     }}
                 >
                     <Avatar
@@ -177,16 +275,13 @@ const ChatInterface = () => {
                             bgcolor: alpha(HEADER_TEXT_COLOR, 0.2),
                             color: HEADER_TEXT_COLOR,
                             width: { xs: 32, sm: 40 },
-                            height: { xs: 32, sm: 40 }
+                            height: { xs: 32, sm: 40 },
                         }}
                         src="/assets/beermaster.jpg"
                         alt="Reuben's Brewmaster"
                     />
-                    <Typography
-                        component="h1"
-                        sx={headerTitleStyles}
-                    >
-                        Reuben's Brewmaster
+                    <Typography component="h1" sx={headerTitleStyles}>
+                        Reuben&apos;s Brewmaster
                     </Typography>
                 </Box>
 
@@ -199,7 +294,7 @@ const ChatInterface = () => {
                         display: 'flex',
                         flexDirection: 'column',
                         gap: 2,
-                        backgroundColor: theme.palette.background.default
+                        backgroundColor: theme.palette.background.default,
                     }}
                     role="log"
                     aria-live="polite"
@@ -209,8 +304,9 @@ const ChatInterface = () => {
                         <Stack
                             key={message.id}
                             sx={{
-                                alignSelf: message.sender === 'user' ? 'flex-end' : 'flex-start',
-                                maxWidth: { xs: '85%', sm: '75%', md: '70%' }
+                                alignSelf:
+                                    message.sender === 'user' ? 'flex-end' : 'flex-start',
+                                maxWidth: { xs: '85%', sm: '75%', md: '70%' },
                             }}
                             direction="row"
                             spacing={1}
@@ -230,7 +326,7 @@ const ChatInterface = () => {
                                         fontFamily: "'Montserrat', sans-serif",
                                         fontWeight: 600,
                                         letterSpacing: '0.5px',
-                                        boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+                                        boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
                                     }}
                                     aria-hidden="true"
                                 >
@@ -243,14 +339,16 @@ const ChatInterface = () => {
                                 sx={{
                                     p: { xs: 1, sm: 1.5 },
                                     borderRadius: 2,
-                                    backgroundColor: message.sender === 'user'
-                                        ? getUserBubbleBackground()
-                                        : getBotBubbleBackground(),
-                                    borderColor: message.sender === 'user'
-                                        ? getUserBubbleBorder()
-                                        : getBotBubbleBorder(),
+                                    backgroundColor:
+                                        message.sender === 'user'
+                                            ? getUserBubbleBackground()
+                                            : getBotBubbleBackground(),
+                                    borderColor:
+                                        message.sender === 'user'
+                                            ? getUserBubbleBorder()
+                                            : getBotBubbleBorder(),
                                     wordBreak: 'break-word',
-                                    boxShadow: 'none'
+                                    boxShadow: 'none',
                                 }}
                             >
                                 <CardContent sx={{ p: 1, '&:last-child': { pb: 1 } }}>
@@ -258,7 +356,7 @@ const ChatInterface = () => {
                                         variant="body1"
                                         sx={{
                                             fontSize: { xs: '0.9rem', sm: '1rem' },
-                                            color: theme.palette.text.primary
+                                            color: theme.palette.text.primary,
                                         }}
                                     >
                                         {message.text}
@@ -270,7 +368,7 @@ const ChatInterface = () => {
                                             textAlign: message.sender === 'user' ? 'right' : 'left',
                                             mt: 0.5,
                                             fontSize: { xs: '0.65rem', sm: '0.75rem' },
-                                            color: theme.palette.text.secondary
+                                            color: theme.palette.text.secondary,
                                         }}
                                     >
                                         {formatTime(message.timestamp)}
@@ -286,7 +384,7 @@ const ChatInterface = () => {
                                         width: { xs: 28, sm: 32 },
                                         height: { xs: 28, sm: 32 },
                                         fontSize: { xs: '0.75rem', sm: '0.875rem' },
-                                        display: { xs: 'none', sm: 'flex' }
+                                        display: { xs: 'none', sm: 'flex' },
                                     }}
                                     aria-hidden="true"
                                 >
@@ -304,7 +402,7 @@ const ChatInterface = () => {
                     sx={{
                         p: { xs: 1.5, sm: 2 },
                         backgroundColor: theme.palette.background.paper,
-                        borderTop: `1px solid ${theme.palette.divider}`
+                        borderTop: `1px solid ${theme.palette.divider}`,
                     }}
                 >
                     <Stack
@@ -324,18 +422,20 @@ const ChatInterface = () => {
                             value={newMessage}
                             onChange={(e) => setNewMessage(e.target.value)}
                             onKeyPress={handleKeyPress}
-                            size={isMobile ? "small" : "medium"}
+                            size={isMobile ? 'small' : 'medium'}
                             sx={{
                                 '& .MuiOutlinedInput-root': {
                                     borderRadius: 2,
-                                    backgroundColor: theme.palette.mode === 'dark'
-                                        ? alpha(theme.palette.common.white, 0.05)
-                                        : alpha(theme.palette.common.black, 0.03),
+                                    backgroundColor:
+                                        theme.palette.mode === 'dark'
+                                            ? alpha(theme.palette.common.white, 0.05)
+                                            : alpha(theme.palette.common.black, 0.03),
                                     '&.Mui-focused': {
-                                        backgroundColor: theme.palette.mode === 'dark'
-                                            ? alpha(theme.palette.common.white, 0.1)
-                                            : alpha(theme.palette.common.black, 0.05),
-                                    }
+                                        backgroundColor:
+                                            theme.palette.mode === 'dark'
+                                                ? alpha(theme.palette.common.white, 0.1)
+                                                : alpha(theme.palette.common.black, 0.05),
+                                    },
                                 },
                             }}
                             multiline
@@ -355,17 +455,17 @@ const ChatInterface = () => {
                                 },
                                 '&.Mui-disabled': {
                                     bgcolor: alpha(HEADER_BG_COLOR, 0.3),
-                                    color: alpha(HEADER_TEXT_COLOR, 0.5)
+                                    color: alpha(HEADER_TEXT_COLOR, 0.5),
                                 },
                                 width: { xs: 40, sm: 48 },
                                 height: { xs: 40, sm: 48 },
                                 borderRadius: 2,
-                                p: 0
+                                p: 0,
                             }}
                             aria-label="Send message"
                             type="submit"
                         >
-                            <SendIcon fontSize={isMobile ? "small" : "medium"} />
+                            <SendIcon fontSize={isMobile ? 'small' : 'medium'} />
                         </IconButton>
                     </Stack>
                 </Box>
@@ -374,4 +474,4 @@ const ChatInterface = () => {
     );
 };
 
-export default ChatInterface; 
+export default ChatInterface;

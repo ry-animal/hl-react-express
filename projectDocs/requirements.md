@@ -2,9 +2,9 @@ Requirements
 
 1. Business Data and Chatbot Behavior
    - [x] Select a small-to-medium business (real or fictional) and load enough contextual information so the LLM can answer questions about that business.
-   - [ ] Chatbot must respond accurately to questions about the business using the data provided.
-   - [ ] Provide fallback answers if certain information is unknown or not in the dataset.
-   - [ ] If the business is real, please provide the website of the business you chose in the README.md file
+   - [x] Chatbot must respond accurately to questions about the business using the data provided.
+   - [x] Provide fallback answers if certain information is unknown or not in the dataset.
+   - [x] If the business is real, please provide the website of the business you chose in the README.md file
 2. UI/UX Requirements
    - [x] Use React as the frontend framework with Material UI for components and design.
    - [x] Design a chat interface that has:
@@ -12,15 +12,15 @@ Requirements
          A scrollable conversation history above (messages from user, responses from the chatbot).
          Clear distinctions between user messages and chatbot responses (e.g., different background colors or styling).
          Looks good and is user-friendly following common UI for chatbots/messaging apps
-   - [ ] (Optional) Provide a basic metrics display somewhere on the UI—for example, to show:
+   - [x] (Optional) Provide a basic metrics display somewhere on the UI—for example, to show:
          The number of messages sent in the session.
          Response latency or average response time.
          (If using a cost-based LLM) an estimate of tokens used or cost.
 3. LLM Integration
-   - [ ] Creating a small function or service that sends user input to the LLM with business context.
-   - [ ] Handling the response and returning it to the frontend for display.
-   - [ ] Provide some form of context injection for the business details or relevant data so the LLM can accurately respond to user queries.
-   - [ ] (Optional) Streaming:
+   - [x] Creating a small function or service that sends user input to the LLM with business context.
+   - [x] Handling the response and returning it to the frontend for display.
+   - [x] Provide some form of context injection for the business details or relevant data so the LLM can accurately respond to user queries.
+   - [x] (Optional) Streaming:
          If the chosen LLM provider supports streaming, implement a streaming response to show the chatbot’s reply as it arrives, rather than waiting for the entire response. This tests real-time data handling.
 4. Public API Integration
    - [ ] Pick a public API that might be relevant or interesting. For instance:
@@ -31,14 +31,11 @@ Requirements
          Checking the user’s query for keywords (e.g., “weather”), or
          Letting the LLM decide based on instructions or custom prompt logic.
 5. Architecture
-   - [ ] All calls to the LLM and the public API happen directly from the browser.
-   - [ ] Use environment variables or a config file for any API keys/secrets (not best practice for production, but acceptable for a quick prototype).
-   - [ ] Keep all chatbot logic in the frontend.
-   - [ ] Preferred: Frontend and Node.js Backend: A minimal Node.js backend is highly recommended, but not required if time constraint requires everything to be in the frontend.
-   - [ ] A small Express (or similar) server that:
-   - [ ] Proxies requests to the LLM API (to avoid exposing API keys in the frontend).
+   - [x] Preferred: Frontend and Node.js Backend: A minimal Node.js backend is highly recommended, but not required if time constraint requires everything to be in the frontend.
+   - [x] A small Express (or similar) server that:
+   - [x] Proxies requests to the LLM API (to avoid exposing API keys in the frontend).
    - [ ] Manages or logs conversation data in memory or a small database (like a JSON file, sqlite, or an in-memory store).
-   - [ ] Optionally, handles user metrics and analytics for each conversation.
+   - [x] Optionally, handles user metrics and analytics for each conversation.
    - **[ ] Frontend calls your Node.js backend endpoints for LLM queries, public API queries, metrics, etc.**
 6. Metrics & Logging (Optional)
    - [ ] Usage Metrics: Keep track of:
@@ -53,7 +50,7 @@ Requirements
 7. Error Handling:
    - [ ] Show clear messages in the chat UI if the LLM call or public API call fails (e.g., “Could not fetch data, please try again.”) and handle network timeouts gracefully.
    8. Documentation:
-   - [ ] A short README describing:
+   - [x] A short README describing:
          How to install and run the project (both frontend and backend if applicable).
          Any environment variables needed (keys for LLM or public APIs).
          The main architectural decisions (frontend-only vs. Node backend).

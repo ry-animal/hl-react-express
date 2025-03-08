@@ -1,0 +1,8 @@
+node_modules
+dist
+build
+.next
+public
+coverage
+*.config.js
+vite.config.ts 

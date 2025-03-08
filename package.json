@@ -7,7 +7,7 @@
     "setup": "npm install && npm run install:frontend && npm run install:backend",
     "install:frontend": "cd frontend && npm install",
     "install:backend": "cd backend && npm install",
-    "dev": "concurrently --kill-others-on-fail --prefix \"[{name}]\" --names \"FRONTEND,BACKEND\" \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "dev": "concurrently --kill-others-on-fail --prefix \"[{name}]\" --names \"FRONTEND,BACKEND\" \"npm run dev:backend\" \"npm run dev:frontend\"",
     "dev:frontend": "cd frontend && npm run dev",
     "dev:backend": "cd backend && npm run dev",
     "build": "npm run build:frontend && npm run build:backend",
@@ -17,7 +17,13 @@
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down",
     "docker:build": "docker-compose up -d --build",
-    "docker:logs": "docker-compose logs -f"
+    "docker:logs": "docker-compose logs -f",
+    "lint": "eslint \"**/*.{js,jsx,ts,tsx}\" --quiet",
+    "lint:fix": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix --quiet",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,css,scss}\"",
+    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md,css,scss}\"",
+    "lint:frontend": "cd frontend && eslint \"src/**/*.{js,jsx,ts,tsx}\" --quiet",
+    "lint:backend": "cd backend && eslint \"src/**/*.{js,jsx,ts,tsx}\" --quiet"
   },
   "keywords": [
     "react",
@@ -28,7 +34,17 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "concurrently": "^8.2.0"
+    "@typescript-eslint/eslint-plugin": "^6.14.0",
+    "@typescript-eslint/parser": "^6.14.0",
+    "concurrently": "^8.2.0",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-jsx-a11y": "^6.8.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "prettier": "^3.1.1"
   },
   "dependencies": {
     "@types/recharts": "^1.8.29",
