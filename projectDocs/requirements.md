@@ -23,8 +23,8 @@ Requirements
    - [x] (Optional) Streaming:
          If the chosen LLM provider supports streaming, implement a streaming response to show the chatbot’s reply as it arrives, rather than waiting for the entire response. This tests real-time data handling.
 4. Public API Integration
-   - [ ] Pick a public API that might be relevant or interesting. For instance:
-   - [ ] Add a function within your code that:
+   - [x] Pick a public API that might be relevant or interesting. For instance:
+   - [x] Add a function within your code that:
          Makes a request to this public API.
          Incorporates the result into the chatbot’s response (e.g., If the user asks, what the weather is by the coffee shop, then it calls the API and responds with something like “It’s currently 75°F near our coffee shop.”)
          Decides whether to call the API based on the user’s question. This could be done by:
@@ -34,21 +34,21 @@ Requirements
    - [x] Preferred: Frontend and Node.js Backend: A minimal Node.js backend is highly recommended, but not required if time constraint requires everything to be in the frontend.
    - [x] A small Express (or similar) server that:
    - [x] Proxies requests to the LLM API (to avoid exposing API keys in the frontend).
-   - [ ] Manages or logs conversation data in memory or a small database (like a JSON file, sqlite, or an in-memory store).
+   - [x] Manages or logs conversation data in memory or a small database (like a JSON file, sqlite, or an in-memory store).
    - [x] Optionally, handles user metrics and analytics for each conversation.
-   - **[ ] Frontend calls your Node.js backend endpoints for LLM queries, public API queries, metrics, etc.**
+   - [x] Frontend calls your Node.js backend endpoints for LLM queries, public API queries, metrics, etc.
 6. Metrics & Logging (Optional)
-   - [ ] Usage Metrics: Keep track of:
+   - [x] Usage Metrics: Keep track of:
          Number of queries made.
          Timestamps for each query/response.
          Potentially tokens or cost if you use an LLM with usage pricing.
          Application Logs:
          Record the questions asked and the responses given (anonymized if necessary).
          Log any errors from the LLM or the public API calls.
-   - [ ] Reporting:
+   - [x] Reporting:
          Display these metrics in the UI or have an endpoint to fetch them from the backend.
 7. Error Handling:
-   - [ ] Show clear messages in the chat UI if the LLM call or public API call fails (e.g., “Could not fetch data, please try again.”) and handle network timeouts gracefully.
+   - [x] Show clear messages in the chat UI if the LLM call or public API call fails (e.g., “Could not fetch data, please try again.”) and handle network timeouts gracefully.
    8. Documentation:
    - [x] A short README describing:
          How to install and run the project (both frontend and backend if applicable).

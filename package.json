@@ -48,6 +48,7 @@
   },
   "dependencies": {
     "@types/recharts": "^1.8.29",
+    "axios": "^1.8.2",
     "recharts": "^2.15.1"
   }
 }

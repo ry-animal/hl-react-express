@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import OpenAI from 'openai';
+import { getBreweries, formatBreweryData } from './breweryDbService';
 
 dotenv.config();
 
@@ -99,15 +100,36 @@ export const estimateTokens = (text: string): number => {
   return estimatedTokens;
 };
 
-/**
- * Send a message to OpenAI API and get a response
- * @param userMessage The message from the user
- * @returns The response from OpenAI
- */
+// Simple function to detect brewery-related queries
+const isBrewerySearchQuery = (message: string): boolean => {
+  return message.toLowerCase().includes('breweries');
+};
+
+// Update getChatCompletion for breweries
 export const getChatCompletion = async (
   userMessage: string
 ): Promise<string> => {
   try {
+    // Check if this is a brewery search query
+    if (isBrewerySearchQuery(userMessage)) {
+      try {
+        const params = { by_city: 'seattle', per_page: 10 };
+        
+        console.log('Fetching breweries in Seattle');
+        const breweries = await getBreweries(params);
+        
+        if (!breweries || breweries.length === 0) {
+          return `I'm sorry, I couldn't find any breweries in Seattle at the moment.`;
+        }
+        
+        // Return a special formatted response that the frontend can detect
+        return `BREWERY_DATA:${JSON.stringify(breweries)}`;
+      } catch (error) {
+        console.error('Error in brewery search:', error);
+        return `I'm sorry, I encountered an issue while fetching brewery information.`;
+      }
+    }
+    
     const completion = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
@@ -122,21 +144,97 @@ export const getChatCompletion = async (
       "Sorry, I couldn't generate a response."
     );
   } catch (error) {
-    console.error('Error calling OpenAI API:', error);
-    throw new Error('Failed to get response from AI service');
+    console.error('Error in chat completion:', error);
+    return "I'm sorry, I couldn't process your request right now. Please try again later.";
   }
 };
 
-/**
- * Stream a response from OpenAI API
- * @param userMessage The message from the user
- * @param onChunk Callback function for each chunk of the response
- */
+// For streaming API calls
 export const streamChatCompletion = async (
   userMessage: string,
   onChunk: (chunk: string) => void
 ): Promise<void> => {
   try {
+    // Check if this is a brewery search query
+    if (isBrewerySearchQuery(userMessage)) {
+      try {
+        // Get breweries in Seattle
+        const params = { by_city: 'seattle', per_page: 10 };
+        
+        console.log('Streaming: Fetching breweries in Seattle');
+        const breweries = await getBreweries(params);
+        
+        if (!breweries || breweries.length === 0) {
+          const errorMsg = `I'm sorry, I couldn't find any breweries in Seattle at the moment. The brewery information service might be temporarily unavailable. Would you like me to tell you about our own beers instead?`;
+          onChunk(errorMsg);
+          return;
+        }
+        
+        // Send the introduction
+        onChunk(`Here are some breweries in Seattle:\n\n`);
+        
+        // Wait a moment for the intro to be displayed
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        // Send each brewery with explicit separators
+        for (let i = 0; i < breweries.length; i++) {
+          const brewery = breweries[i];
+          
+          // Send clear separator
+          onChunk(`\n===========================\n`);
+          onChunk(`BREWERY #${i + 1}\n`);
+          onChunk(`===========================\n\n`);
+          
+          // Wait to ensure separator is displayed
+          await new Promise(resolve => setTimeout(resolve, 50));
+          
+          // Send name
+          onChunk(`NAME: ${brewery.name}\n\n`);
+          await new Promise(resolve => setTimeout(resolve, 50));
+          
+          // Send type
+          onChunk(`TYPE: ${brewery.brewery_type}\n\n`);
+          await new Promise(resolve => setTimeout(resolve, 50));
+          
+          // Send address
+          if (brewery.street) {
+            onChunk(`ADDRESS:\n`);
+            onChunk(`${brewery.street}\n`);
+            onChunk(`${brewery.city}, ${brewery.state} ${brewery.postal_code}\n\n`);
+          } else {
+            onChunk(`LOCATION:\n`);
+            onChunk(`${brewery.city}, ${brewery.state}\n\n`);
+          }
+          await new Promise(resolve => setTimeout(resolve, 50));
+          
+          // Send phone
+          if (brewery.phone) {
+            const formattedPhone = brewery.phone.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+            onChunk(`PHONE: ${formattedPhone}\n\n`);
+            await new Promise(resolve => setTimeout(resolve, 50));
+          }
+          
+          // Send website
+          if (brewery.website_url) {
+            onChunk(`WEBSITE: ${brewery.website_url}\n\n`);
+            await new Promise(resolve => setTimeout(resolve, 50));
+          }
+          
+          // Wait between breweries
+          await new Promise(resolve => setTimeout(resolve, 100));
+        }
+        
+        // Send closing message
+        onChunk(`\nEnjoy exploring the local craft beer scene!`);
+        return;
+      } catch (breweryError) {
+        console.error('Error in brewery streaming search:', breweryError);
+        onChunk(`I'm sorry, I encountered an issue while fetching brewery information. Would you like to know about our own beers at Reuben's Brews instead?`);
+        return;
+      }
+    }
+    
+    // Handle non-brewery queries with regular streaming
     const stream = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
@@ -154,7 +252,20 @@ export const streamChatCompletion = async (
       }
     }
   } catch (error) {
-    console.error('Error streaming from OpenAI API:', error);
-    throw new Error('Failed to stream response from AI service');
+    console.error('Error in stream chat completion:', error);
+    onChunk("I'm sorry, I couldn't process your request right now. Please try again later.");
+  }
+};
+
+// Improved helper for sending messages in very small chunks
+const sendMessageInSmallChunks = async (text: string, onChunk: (chunk: string) => void) => {
+  // Use a much smaller chunk size to ensure proper delivery
+  const chunkSize = 25; // Very small chunks
+  
+  for (let i = 0; i < text.length; i += chunkSize) {
+    const chunk = text.substring(i, i + chunkSize);
+    onChunk(chunk);
+    // Longer delay between chunks for reliability
+    await new Promise(resolve => setTimeout(resolve, 25));
   }
 };

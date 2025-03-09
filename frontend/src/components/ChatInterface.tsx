@@ -185,7 +185,6 @@ const ChatInterface = () => {
         return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     };
 
-    // Get appropriate background colors with proper contrast
     const getUserBubbleBackground = () =>
         theme.palette.mode === 'dark'
             ? alpha(theme.palette.secondary.light, 0.15)

@@ -6,6 +6,7 @@ import express from 'express';
 
 import chatRoutes from './routes/chatRoutes';
 import metricsRoutes from './routes/metricsRoutes';
+import breweryRoutes from './routes/breweryRoutes';
 
 // Load environment variables
 dotenv.config();
@@ -29,6 +30,7 @@ app.use(express.static(staticPath));
 // API routes
 app.use('/api/chat', chatRoutes);
 app.use('/api/metrics', metricsRoutes);
+app.use('/api/breweries', breweryRoutes);
 
 // Default route for API
 app.get('/api', (req, res) => {
