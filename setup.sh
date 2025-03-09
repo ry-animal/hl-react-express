@@ -14,7 +14,7 @@ npm install
 
 # Install frontend dependencies
 echo -e "${BLUE}Installing frontend dependencies...${NC}"
-cd frontend && npm install
+cd frontend && npm install --legacy-peer-deps && \
 cd ..
 
 # Install backend dependencies

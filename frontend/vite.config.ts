@@ -13,6 +13,7 @@ export default defineConfig({
       },
     },
   },
+  // @ts-expect-error - Vitest config is not recognized by Vite types but works in practice
   test: {
     globals: true,
     environment: 'jsdom',

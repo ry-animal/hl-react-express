@@ -1,9 +1,20 @@
-import { Box, Container, Typography, Link, useMediaQuery } from '@mui/material';
+import { Box, Container, Typography, Link, useMediaQuery, IconButton } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import { keyframes } from '@mui/system';
 
 const Footer = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  // Define wiggle animation with more pronounced rotation
+  const wiggle = keyframes`
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(-10deg); }
+    50% { transform: rotate(0deg); }
+    75% { transform: rotate(10deg); }
+    100% { transform: rotate(0deg); }
+  `;
 
   // Determine appropriate text color for best contrast
   const getTextColor = () => {
@@ -63,39 +74,79 @@ const Footer = () => {
           />
         </Box>
 
-        <Typography
-          variant="body2"
-          align={isMobile ? 'center' : 'right'}
-          sx={{
-            fontSize: { xs: '0.7rem', sm: '0.8rem' },
-            color: 'inherit',
-            fontWeight: theme.palette.mode === 'dark' ? 'normal' : 'medium',
-            lineHeight: 1.4,
-            mb: isMobile ? 0.5 : 0,
-          }}
-        >
-          {'© '}
-          <Link
-            color="inherit"
-            href="#"
+        <Box sx={{
+          display: 'flex',
+          alignItems: 'center',
+          flexDirection: isMobile ? 'column' : 'row',
+          gap: 2
+        }}>
+          <Typography
+            variant="body2"
+            align={isMobile ? 'center' : 'right'}
             sx={{
-              textDecoration: 'none',
-              fontWeight: 'medium',
-              '&:hover': {
-                textDecoration: 'underline',
-              },
-              '&:focus-visible': {
-                outline: `2px solid ${getTextColor()}`,
-                outlineOffset: 2,
-              },
+              fontSize: { xs: '0.7rem', sm: '0.8rem' },
+              color: 'inherit',
+              fontWeight: theme.palette.mode === 'dark' ? 'normal' : 'medium',
+              lineHeight: 1.4,
+              mb: isMobile ? 0.5 : 0,
             }}
-            aria-label="Reuben's Brews website"
           >
-            Reuben&apos;s Brews
-          </Link>{' '}
-          {new Date().getFullYear()}
-          {'. All rights reserved.'}
-        </Typography>
+            {'© '}
+            <Link
+              color="inherit"
+              href="#"
+              sx={{
+                textDecoration: 'none',
+                fontWeight: 'medium',
+                '&:hover': {
+                  textDecoration: 'underline',
+                },
+                '&:focus-visible': {
+                  outline: `2px solid ${getTextColor()}`,
+                  outlineOffset: 2,
+                },
+              }}
+              aria-label="Reuben's Brews website"
+            >
+              Reuben&apos;s Brewmaster
+            </Link>{' '}
+            {new Date().getFullYear()}
+            {'. All rights reserved.'}
+          </Typography>
+
+          <IconButton
+            component="a"
+            href="https://github.com/ry-animal/hl-react-express"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="GitHub repository"
+            disableRipple
+            sx={{
+              padding: 1,
+              color: 'inherit',
+              animation: 'none',
+              '&.MuiIconButton-root': {
+                '&:hover': {
+                  backgroundColor: 'transparent',
+                  color: 'inherit',
+                },
+              },
+              '&:hover': {
+                backgroundColor: 'transparent',
+                color: 'inherit',
+                '& .MuiSvgIcon-root': {
+                  animation: `${wiggle} 0.7s ease-in-out infinite`,
+                },
+              },
+              '& .MuiSvgIcon-root': {
+                fontSize: '1.5rem',
+                transition: 'all 0.3s ease-in-out',
+              }
+            }}
+          >
+            <GitHubIcon />
+          </IconButton>
+        </Box>
       </Container>
     </Box>
   );

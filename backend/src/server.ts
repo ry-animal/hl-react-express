@@ -1,7 +1,7 @@
 import app from './app';
 import { dbPromise } from './db';
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 
 const startServer = async () => {
   try {

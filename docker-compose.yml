@@ -4,14 +4,14 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - '3000:3000'
+      - '8000:8000'
     volumes:
       - sqlite-data:/app/data
     env_file:
       - backend/.env
     environment:
       - NODE_ENV=production
-      - PORT=3000
+      - PORT=8000
     restart: unless-stopped
 
 volumes:

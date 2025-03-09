@@ -26,7 +26,7 @@ This document explains how to run the application using Docker and Docker Compos
 
 3. Access the application:
 
-   - Frontend: http://localhost:3000
+   - Frontend: http://localhost:8000
 
 4. Stop the application:
    ```bash
@@ -43,7 +43,7 @@ This document explains how to run the application using Docker and Docker Compos
 
 2. Run the container:
    ```bash
-   docker run -p 3000:3000 -v llm-data:/app/data -d llm-chatbot
+   docker run -p 8000:8000 -v llm-data:/app/data -d llm-chatbot
    ```
 
 ## Development Workflow
@@ -72,10 +72,10 @@ The application uses a Docker volume to persist SQLite database data:
 You can customize the application by setting the following environment variables:
 
 - `NODE_ENV`: Set to 'production' by default
-- `PORT`: The port on which the application runs (default: 3000)
+- `PORT`: The port on which the application runs (default: 8000)
 
 Add these to the `environment` section in `docker-compose.yml` or pass them when running Docker directly:
 
 ```bash
-docker run -p 3000:3000 -e PORT=4000 -v llm-data:/app/data -d llm-chatbot
+docker run -p 8000:8000 -e PORT=4000 -v llm-data:/app/data -d llm-chatbot
 ```

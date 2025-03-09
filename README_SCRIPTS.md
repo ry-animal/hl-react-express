@@ -60,5 +60,5 @@ For ease of use, the following shell scripts are provided:
 ## Access Points
 
 - Frontend: http://localhost:5173
-- Backend API: http://localhost:3000/api
-- Docker container: http://localhost:3000
+- Backend API: http://localhost:8000/api
+- Docker container: http://localhost:8000

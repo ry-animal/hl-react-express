@@ -8,9 +8,9 @@ COPY package*.json ./
 COPY frontend/package*.json ./frontend/
 COPY backend/package*.json ./backend/
 
-# Install dependencies
+# Install dependencies with legacy-peer-deps flag to handle React version conflicts
 RUN npm install && \
-    cd frontend && npm install && \
+    cd frontend && npm install --legacy-peer-deps && \
     cd ../backend && npm install
 
 # Copy source code
@@ -42,10 +42,10 @@ VOLUME /app/data
 
 # Set environment variables
 ENV NODE_ENV production
-ENV PORT 3000
+ENV PORT 8000
 
 # Expose port
-EXPOSE 3000
+EXPOSE 8000
 
 # Start command
 CMD ["node", "dist/index.js"] 

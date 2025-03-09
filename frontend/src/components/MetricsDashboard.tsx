@@ -332,7 +332,7 @@ const MetricsDashboard = () => {
                                                         animationDuration={800}
                                                         animationBegin={300}
                                                     >
-                                                        {summaryData.eventCounts.map((entry, index) => (
+                                                        {summaryData.eventCounts.map((_, index) => (
                                                             <Cell
                                                                 key={`cell-${index}`}
                                                                 fill={COLORS[index % COLORS.length]}
