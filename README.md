@@ -69,6 +69,12 @@ project-root/
 - npm or yarn
 - OpenAI API key
 
+## EZ App Dev
+
+- ./setup.sh
+- ./run-tests.sh
+- ./dev.sh
+
 ### Backend Setup
 
 - Navigate to the backend directory:
@@ -156,3 +162,57 @@ project-root/
   ```bash
   npm run docker:down
   ```
+
+## Running Tests
+
+The project includes tests for both frontend and backend. You can run them separately or together using the following npm scripts:
+
+### Run All Tests
+
+```bash
+# Run tests for both frontend and backend in parallel
+npm test
+
+# Run tests with a nicely formatted summary
+npm run test:summary
+```
+
+### Run Tests for a Specific Part
+
+```bash
+# Run only frontend tests
+npm run test:frontend
+
+# Run only backend tests
+npm run test:backend
+```
+
+### Watch Mode
+
+To run tests in watch mode (tests rerun when files change):
+
+```bash
+# Watch mode for both frontend and backend
+npm run test:watch
+
+# Watch mode for frontend only
+npm run test:watch:frontend
+
+# Watch mode for backend only
+npm run test:watch:backend
+```
+
+### Coverage Reports
+
+To generate test coverage reports:
+
+```bash
+# Generate coverage reports for both frontend and backend
+npm run test:coverage
+
+# Generate coverage report for frontend only
+npm run test:coverage:frontend
+
+# Generate coverage report for backend only
+npm run test:coverage:backend
+```
