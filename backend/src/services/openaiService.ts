@@ -1,6 +1,9 @@
 import dotenv from 'dotenv';
 import OpenAI from 'openai';
-import { getBreweries, formatBreweryData } from './breweryDbService';
+import { getBreweries } from './breweryDbService';
+import { formatBreweryData } from '../utils/formatters';
+import { estimateTokens } from '../utils/tokenUtils';
+import { isBrewerySearchQuery } from '../utils/queryUtils';
 
 dotenv.config();
 
@@ -80,30 +83,6 @@ Always ensure each bullet point or line of information appears on its own separa
 Please help customers with questions about our beers, brewery, locations, hours, and any other brewery-related topics.
 Be friendly, enthusiastic about craft beer, and knowledgeable while maintaining a conversational tone.
 `;
-
-/**
- * Estimate the number of tokens in a text string
- * This is a rough estimate based on the OpenAI tokenization rules:
- * - ~4 characters per token for English text
- * - Varies by language and content
- * 
- * @param text The text to estimate tokens for
- * @returns Estimated token count
- */
-export const estimateTokens = (text: string): number => {
-  if (!text) return 0;
-  
-  // Basic estimation - 4 chars per token is a common rule of thumb for English
-  // This is not exact but gives a reasonable approximation
-  const estimatedTokens = Math.ceil(text.length / 4);
-  
-  return estimatedTokens;
-};
-
-// Simple function to detect brewery-related queries
-const isBrewerySearchQuery = (message: string): boolean => {
-  return message.toLowerCase().includes('breweries');
-};
 
 // Update getChatCompletion for breweries
 export const getChatCompletion = async (

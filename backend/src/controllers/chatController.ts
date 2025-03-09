@@ -1,17 +1,8 @@
 import { Request, Response } from 'express';
 import { saveMetric, saveLog } from '../services/metricsService';
-import { getChatCompletion, streamChatCompletion, estimateTokens } from '../services/openaiService';
-
-const MODEL_PRICING = {
-  'gpt-3.5-turbo': {
-    input: 0.0015,
-    output: 0.002
-  },
-  'gpt-4': {
-    input: 0.03,
-    output: 0.06
-  }
-};
+import { getChatCompletion, streamChatCompletion } from '../services/openaiService';
+import { MODEL_PRICING } from '../utils/constants';
+import { estimateTokens } from '../utils/tokenUtils';
 
 /**
  * Handle chat request with non-streaming response

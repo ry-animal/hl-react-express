@@ -1,24 +1,5 @@
 import db from './databaseService';
-
-interface MetricData {
-  eventType: string;
-  messageLength?: number;
-  responseLength?: number;
-  responseTime?: number;
-  timestamp: string;
-  model?: string;
-  tokenCount?: number;
-  estimatedCost?: number;
-  extraData?: any;
-}
-
-interface LogData {
-  requestType: string;
-  userMessage?: string;
-  aiResponse?: string;
-  error?: string;
-  timestamp: string;
-}
+import { MetricData, LogData } from '../utils/types';
 
 /**
  * Save a metric record to the database
